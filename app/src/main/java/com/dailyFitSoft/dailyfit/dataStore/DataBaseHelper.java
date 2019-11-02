@@ -7,6 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.dailyFitSoft.dailyfit.DateFormatter;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "DailyFit_DB";
@@ -93,6 +99,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public List<Exercise> getExerciseList() {
+        Cursor data = this.getExerciseData();
+        List<Exercise> exercises = new ArrayList<>();
+        while(data.moveToNext()){
+            exercises.add(new Exercise(data.getInt(0), data.getString(1), data.getInt(2), data.getInt(3)));
+        }
+        return exercises;
+    }
+
     //========PLANNED=EXERCISE======================================================
 
     public boolean addPlannedExerciseData(int exerciseID, int trainTime, int repeatCount, String dateAndTime) {
@@ -113,6 +128,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
+    private Cursor getPlannedExerciseData(Date date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + PLANNED_EXERCISE_TABLE_NAME + " WHERE " + PLANNED_EXERCISE_COL5 + " = " + DateFormatter.stringFromDate(date);
+        return db.rawQuery(query, null);
+    }
+
     public void dropPlannedExercise(int ID) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + PLANNED_EXERCISE_TABLE_NAME + " WHERE " + PLANNED_EXERCISE_COL1 + " = " + ID;
@@ -125,14 +146,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    private List<PlannedExercise> getPlannedExerciseList(Cursor data){
+        List<PlannedExercise> plannedExercises = new ArrayList<>();
+        while(data.moveToNext()){
+            try {
+                plannedExercises.add(new PlannedExercise(data.getInt(0), data.getInt(1), data.getInt(2), data.getInt(3), DateFormatter.dateFromString(data.getString(4))));
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return  plannedExercises;
+    }
+
+    public List<PlannedExercise> getPlannedExercisesList() {
+        return getPlannedExerciseList(getPlannedExerciseData());
+    }
+
+    public List<PlannedExercise> getPlannedExerciseList(Date date) {
+        return  getPlannedExerciseList(getPlannedExerciseData(date));
+    }
+
     //==========GOALS=================================================================
 
-    public boolean addGoalData(String goalName, String endDate, int isAchived) {
+    public boolean addGoalData(String goalName, String endDate, boolean isAchived) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(GOAL_COL2, goalName);
         contentValues.put(GOAL_COL3, endDate);
-        contentValues.put(GOAL_COL4, isAchived);
+        contentValues.put(GOAL_COL4, !isAchived ? 0 : 1);
         Log.d(GOAL_TABLE_NAME, "adding goal: " + goalName);
         long results = db.insert(GOAL_TABLE_NAME, null, contentValues);
         return (results != -1);
@@ -141,6 +183,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private Cursor getGoalData(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + GOAL_TABLE_NAME;
+        return db.rawQuery(query, null);
+    }
+
+    private Cursor getGoalData(Date date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + GOAL_TABLE_NAME + " WHERE " + GOAL_COL3 + " = " + DateFormatter.stringFromDate(date);
         return db.rawQuery(query, null);
     }
 
@@ -154,6 +202,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + GOAL_TABLE_NAME + " WHERE 1=1";
         db.execSQL(query);
+    }
+
+    private List<Goal> getGoalList(Cursor data){
+        List<Goal> goals = new ArrayList<>();
+        while(data.moveToNext()){
+            try {
+                goals.add(new Goal(data.getInt(0), data.getString(1), DateFormatter.dateFromString(data.getString(2)), data.getInt(3) != 0));
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return goals;
+    }
+
+    public List<Goal> getGoalList(){
+        return getGoalList(getGoalData());
+    }
+
+    public List<Goal> getGoalList(Date date){
+        return getGoalList(getGoalData(date));
     }
 
     //=========WEIGHT===============================================================
@@ -174,6 +243,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
+    private Cursor getWeightData(Date date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + WEIGHT_TABLE_NAME + " WHERE " + WEIGHT_COL2 + " = " + DateFormatter.stringFromDate(date);
+        return db.rawQuery(query, null);
+    }
+
     public void dropWeight(int ID){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + WEIGHT_TABLE_NAME + " WHERE " + WEIGHT_COL1 + " = " + ID;
@@ -184,5 +259,26 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + WEIGHT_TABLE_NAME + " WHERE 1=1";
         db.execSQL(query);
+    }
+
+    private List<Weight> getWeightList(Cursor data){
+        List<Weight> weights = new ArrayList<>();
+        while(data.moveToNext()){
+            try {
+                weights.add(new Weight(data.getInt(0), DateFormatter.dateFromString(data.getString(1)), data.getFloat(2)));
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return weights;
+    }
+
+    public List<Weight> getWeightList(){
+        return getWeightList(getWeightData());
+    }
+
+    public List<Weight> getWeightList(Date date){
+        return getWeightList(getWeightData(date));
     }
 }
