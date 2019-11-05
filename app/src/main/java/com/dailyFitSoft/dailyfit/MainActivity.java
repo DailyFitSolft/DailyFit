@@ -1,23 +1,15 @@
 package com.dailyFitSoft.dailyfit;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
+import com.dailyFitSoft.dailyfit.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -29,11 +21,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.widget.Toast;
+import android.widget.CalendarView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    public static String selectedDate="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                addEventToCalendar();
             }
         });
 
@@ -75,5 +71,15 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    public void addEventToCalendar()
+    {
+        CalendarView homeCalendar = HomeFragment.getHomeCalendar();
+        final Dialog dialog = new Dialog(MainActivity.this); // Context, this, etc.
+        dialog.setContentView(R.layout.popup_add_event_to_calendar);
+        dialog.setTitle(R.string.popup_title_add_event_to_calendar);
+        TextView dateOfExerciseTextView = dialog.findViewById(R.id.date_of_exercise);
+        dateOfExerciseTextView.setText("Exercise on: " + selectedDate);
+        dialog.show();
     }
 }
