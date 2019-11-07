@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/text_exercise"
+        android:id="@+id/text_goal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/ExerciseListView"
+        android:id="@+id/GoalListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

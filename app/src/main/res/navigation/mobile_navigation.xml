@@ -13,9 +13,13 @@
     <fragment
         android:id="@id/nav_excercise"
         android:name="com.dailyFitSoft.dailyfit.ui.exercise.ExerciseFragment"
-        android:label="Excercise"
+        android:label="Excercises"
         tools:layout="@layout/fragment_excercise" />
-
+    <fragment
+        android:id="@id/nav_goal"
+        android:name="com.dailyFitSoft.dailyfit.ui.goals.GoalFragment"
+        android:label="Goals"
+        tools:layout="@layout/fragment_goal" />
     <fragment
         android:id="@id/nav_gallery"
         android:name="com.dailyFitSoft.dailyfit.ui.gallery.GalleryFragment"

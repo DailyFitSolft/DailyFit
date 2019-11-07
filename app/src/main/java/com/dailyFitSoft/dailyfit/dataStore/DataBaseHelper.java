@@ -18,6 +18,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "DailyFit_DB";
     private static final int DATABASE_VERSION = 1;
 
+
     private static final String EXERCISE_TABLE_NAME = "exercises";
     private static final String EXERCISE_COL1 = "ID";
     private static final String EXERCISE_COL2 = "Name";
@@ -58,6 +59,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(createTablePlannedExercise);
         sqLiteDatabase.execSQL(createTableGoal);
         sqLiteDatabase.execSQL(createTableWeight);
+        addExerciseData("Bieganie", 5, 20);
+        addExerciseData("Nordic Walking", 3, 11);
+        addExerciseData("Pilka nozna", 7, 25);
     }
 
     @Override
