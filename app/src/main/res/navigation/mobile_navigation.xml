@@ -10,7 +10,16 @@
         android:name="com.dailyFitSoft.dailyfit.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
-
+    <fragment
+        android:id="@id/nav_excercise"
+        android:name="com.dailyFitSoft.dailyfit.ui.exercise.ExerciseFragment"
+        android:label="Excercises"
+        tools:layout="@layout/fragment_excercise" />
+    <fragment
+        android:id="@id/nav_goal"
+        android:name="com.dailyFitSoft.dailyfit.ui.goals.GoalFragment"
+        android:label="Goals"
+        tools:layout="@layout/fragment_goal" />
     <fragment
         android:id="@id/nav_gallery"
         android:name="com.dailyFitSoft.dailyfit.ui.gallery.GalleryFragment"
