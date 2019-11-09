@@ -24,6 +24,7 @@ public class DateFormatter {
         }
     }
 
+
     public static Date dateFromString(String dateStr) throws IllegalArgumentException{
         try {
             return formatter.parse(dateStr);

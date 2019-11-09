@@ -16,7 +16,8 @@ import java.util.List;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "DailyFit_DB";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
+
 
     private static final String EXERCISE_TABLE_NAME = "exercises";
     private static final String EXERCISE_COL1 = "ID";
@@ -44,6 +45,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        //dodawanie celow
+        //addGoalData("Przebiegnij 10km!", "2019-11-20", false);
+        //addGoalData("Przebiegnij 5km!", "2019-11-08", true);
     }
 
     @Override
@@ -58,6 +62,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(createTablePlannedExercise);
         sqLiteDatabase.execSQL(createTableGoal);
         sqLiteDatabase.execSQL(createTableWeight);
+        sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
+            ") VALUES ('Bieganie', 5, 20)");
+        sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
+                ") VALUES ('Nordic walking', 3, 10)");
+        sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
+                ") VALUES ('Piłka nożna', 7, 25)");
+        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
+                GOAL_COL4 + ") VALUES ('Przebiegnij 10 km!', '20-11-2019 00:00:00', '0')");
+        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
+                GOAL_COL4 + ") VALUES ('Przebiegnij 5 km!', '08-11-2019 00:00:00', '1')");
+        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
+                GOAL_COL4 + ") VALUES ('Przejdź 5 km!', '06-11-2019 00:00:00', '0')");
+
+
+
+
     }
 
     @Override
