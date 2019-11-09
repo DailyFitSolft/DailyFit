@@ -23,7 +23,8 @@ import java.util.ArrayList;
 public class ExerciseFragment extends Fragment {
 
     private ExerciseViewModel exerciseViewModel;
-    private DataBaseHelper dataBaseHelper;
+
+
 
     @Nullable
     @Override
@@ -32,29 +33,28 @@ public class ExerciseFragment extends Fragment {
         exerciseViewModel =
                 ViewModelProviders.of(this).get(ExerciseViewModel.class);
         View root = inflater.inflate(R.layout.fragment_excercise, container, false);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
 
+        ArrayList<Exercise> exercises = new ArrayList<Exercise>();
 
-        ArrayList<Exercise> Exercises = new ArrayList<Exercise>();
-
-        ArrayList<String> ExercisesToShow = new ArrayList<String>();
+        ArrayList<String> exercisesToShow = new ArrayList<String>();
         try {
-            Exercises = (ArrayList<Exercise>) dataBaseHelper.getExerciseList();
+            exercises = (ArrayList<Exercise>) dataBaseHelper.getExerciseList();
         }catch (NullPointerException ex){
             System.out.println("Pusta baza");
         }
 
-        for (Exercise exercise: Exercises) {
-            String helper =  exercise.getName();
-            ExercisesToShow.add(helper);
-
+        for (Exercise exercise: exercises) {
+            exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalone kalorie: " +
+                    exercise.getBurnedCalories());
         }
 
-        ListView listView = (ListView) root.findViewById(R.id.ExerciseListView);
+        ListView listView =  root.findViewById(R.id.ExerciseListView);
 
         ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
-                ExercisesToShow
+                exercisesToShow
         );
 
         listView.setAdapter(listViewAdapter);
