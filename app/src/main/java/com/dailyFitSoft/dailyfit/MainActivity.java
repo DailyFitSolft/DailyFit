@@ -3,7 +3,11 @@ package com.dailyFitSoft.dailyfit;
 import android.app.Dialog;
 import android.os.Bundle;
 
+<<<<<<< HEAD
 import com.dailyFitSoft.dailyfit.ui.home.HomeFragment;
+=======
+import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
+>>>>>>> 7ec410b66845454340566ad90b6ae0dce4866e64
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.View;
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
+                R.id.nav_home, R.id.nav_excercise, R.id.nav_gallery, R.id.nav_slideshow,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send)
                 .setDrawerLayout(drawer)
                 .build();
