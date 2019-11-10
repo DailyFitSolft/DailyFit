@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.dailyFitSoft.dailyfit.dataStore.PlannedExercise;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -126,12 +128,11 @@ public class HomeFragment extends Fragment {
             }
 
         });
+        final EditText numberOfRepeats = alertDialogView.findViewById(R.id.number_of_repeats);
+        final EditText timeOfExercise = alertDialogView.findViewById(R.id.time_of_exercise);
         alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),0,0,textRepresentationOfDate);
-                Exercise temp2Exercise = (Exercise)exerciseSelector.getSelectedItem();
-                exercisesOnDay.add(temp2Exercise.getName());
-                exerciseListDataAdapter.notifyDataSetChanged();
+                dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate);
                 dialog.cancel();
             }
         });
@@ -142,18 +143,17 @@ public class HomeFragment extends Fragment {
     {
         exercisesOnDay.clear();
         exerciseListDataAdapter.notifyDataSetChanged();
-//        for (PlannedExercise pe:dataBaseHelper.getPlannedExerciseList(DateFormatter.dateFromString(textRepresentationOfDate)))
-//        {
-//            exercisesOnDay.add(pe.toString());
-//            exerciseListDataAdapter.notifyDataSetChanged();
-//        }
         for (PlannedExercise pe:dataBaseHelper.getPlannedExercisesList()) {
-            Log.d("test" ,"Data kliknieta: " + textRepresentationOfDate);
-            Log.d("test","Data cwiczenia " + pe.getPlannedDateAndTime().toString());
-            if(pe.getPlannedDateAndTime().toString().equals(textRepresentationOfDate))
+            if(pe.getPlannedDateAndTime().equals(DateFormatter.dateFromString(textRepresentationOfDate)))
             {
-                exercisesOnDay.add(pe.toString());
-                exerciseListDataAdapter.notifyDataSetChanged();
+                for (Exercise e:dataBaseHelper.getExerciseList()) {
+                    if(e.getID()==pe.getExerciseID())
+                    {
+                        exercisesOnDay.add(e.toString() + pe.toString());
+                        exerciseListDataAdapter.notifyDataSetChanged();
+                    }
+                }
+
             }
 
         }

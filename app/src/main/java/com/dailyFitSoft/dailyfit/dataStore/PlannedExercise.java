@@ -1,5 +1,7 @@
 package com.dailyFitSoft.dailyfit.dataStore;
 
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 
 public class PlannedExercise {
@@ -36,5 +38,11 @@ public class PlannedExercise {
 
     public Date getPlannedDateAndTime() {
         return plannedDateAndTime;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return " Czas: " + trainTime + " Powtorzenia: " + repeatCount;
     }
 }
