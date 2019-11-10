@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
@@ -22,19 +22,16 @@
             android:id="@+id/date_of_exercise"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Sample Date"
             android:textAlignment="center"
-            android:text="TextView"/>
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/exercise_selector"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/add_exercise_button"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add exercise" />
+            android:textAlignment="center" />
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
