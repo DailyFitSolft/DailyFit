@@ -6,15 +6,18 @@ import java.util.Date;
 
 public class DateFormatter {
 
-    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//    String oldPattern = "dd-MM-yyyy HH:mm:ss";
+
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     public static Date dateFromString(int day, int month, int year, int hour, int minute) throws IllegalArgumentException {
         try {
             String dayStr = day < 10 ? "0" + day : String.valueOf(day);
             String monthStr = month < 10 ? "0" + month : String.valueOf(month);
-            String hourStr = hour < 10 ? "0" + hour : String.valueOf(hour);
-            String minuteStr = minute < 10 ? "0" + minute : String.valueOf(minute);
-            String dateInString = dayStr + "-" + monthStr + "-" + year + " " + hourStr + ":" + minuteStr + ":00";
+//            String hourStr = hour < 10 ? "0" + hour : String.valueOf(hour);
+//            String minuteStr = minute < 10 ? "0" + minute : String.valueOf(minute);
+//            String dateInString = dayStr + "-" + monthStr + "-" + year + " " + hourStr + ":" + minuteStr + ":00";
+            String dateInString = dayStr + "-" + monthStr + "-" +year;
             Date date = formatter.parse(dateInString);
             return date;
         }

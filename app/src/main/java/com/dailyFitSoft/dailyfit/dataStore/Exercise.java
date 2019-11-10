@@ -1,5 +1,7 @@
 package com.dailyFitSoft.dailyfit.dataStore;
 
+import androidx.annotation.NonNull;
+
 public class Exercise {
 
     private int ID;
@@ -28,5 +30,11 @@ public class Exercise {
 
     public int getBurnedCalories() {
         return burnedCalories;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name + " Trudnosc: " + difficulty + " Kalorie: " + burnedCalories;
     }
 }
