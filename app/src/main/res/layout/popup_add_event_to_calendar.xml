@@ -23,18 +23,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="TextView" />
+            android:text="TextView"/>
 
-        <EditText
-            android:id="@+id/editText"
+        <Spinner
+            android:id="@+id/exercise_selector"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
+            android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/addExerciseButton"
+            android:id="@+id/add_exercise_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add exercise" />
