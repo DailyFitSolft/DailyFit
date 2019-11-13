@@ -45,9 +45,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //dodawanie celow
-        //addGoalData("Przebiegnij 10km!", "2019-11-20", false);
-        //addGoalData("Przebiegnij 5km!", "2019-11-08", true);
+
     }
 
     @Override
