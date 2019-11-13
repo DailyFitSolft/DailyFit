@@ -14,10 +14,10 @@ public class DateFormatter {
         try {
             String dayStr = day < 10 ? "0" + day : String.valueOf(day);
             String monthStr = month < 10 ? "0" + month : String.valueOf(month);
-//            String hourStr = hour < 10 ? "0" + hour : String.valueOf(hour);
-//            String minuteStr = minute < 10 ? "0" + minute : String.valueOf(minute);
-//            String dateInString = dayStr + "-" + monthStr + "-" + year + " " + hourStr + ":" + minuteStr + ":00";
-            String dateInString = dayStr + "-" + monthStr + "-" +year;
+            String hourStr = hour < 10 ? "0" + hour : String.valueOf(hour);
+            String minuteStr = minute < 10 ? "0" + minute : String.valueOf(minute);
+            //String dateInString = dayStr + "-" + monthStr + "-" + year + " " + hourStr + ":" + minuteStr;
+            String dateInString = dayStr + "-" + monthStr + "-" + year;
             Date date = formatter.parse(dateInString);
             return date;
         }

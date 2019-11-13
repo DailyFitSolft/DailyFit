@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -130,9 +131,10 @@ public class HomeFragment extends Fragment {
         });
         final EditText numberOfRepeats = alertDialogView.findViewById(R.id.number_of_repeats);
         final EditText timeOfExercise = alertDialogView.findViewById(R.id.time_of_exercise);
+        final TimePicker timePicker = alertDialogView.findViewById(R.id.time_picker);
         alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate);
+                dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
                 dialog.cancel();
             }
         });
@@ -144,7 +146,7 @@ public class HomeFragment extends Fragment {
         exercisesOnDay.clear();
         exerciseListDataAdapter.notifyDataSetChanged();
         for (PlannedExercise pe:dataBaseHelper.getPlannedExercisesList()) {
-            if(pe.getPlannedDateAndTime().equals(DateFormatter.dateFromString(textRepresentationOfDate)))
+            if(pe.getPlannedDate().equals(DateFormatter.dateFromString(textRepresentationOfDate)))
             {
                 for (Exercise e:dataBaseHelper.getExerciseList()) {
                     if(e.getID()==pe.getExerciseID())
