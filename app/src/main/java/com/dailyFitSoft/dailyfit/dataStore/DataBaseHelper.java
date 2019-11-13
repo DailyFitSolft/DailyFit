@@ -16,7 +16,7 @@ import java.util.List;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "DailyFit_DB";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
 
     private static final String EXERCISE_TABLE_NAME = "exercises";
@@ -30,7 +30,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String PLANNED_EXERCISE_COL2 = "ExerciseID";
     private static final String PLANNED_EXERCISE_COL3 = "TrainTime";
     private static final String PLANNED_EXERCISE_COL4 = "RepeatCount";
-    private static final String PLANNED_EXERCISE_COL5 = "PlannedDateAndTime";
+    private static final String PLANNED_EXERCISE_COL5 = "PlannedDate";
+    private static final String PLANNED_EXERCISE_COL6 = "PlannedTime";
 
     private static final String GOAL_TABLE_NAME = "goals";
     private static final String GOAL_COL1 = "ID";
@@ -52,7 +53,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTableExercise = "CREATE TABLE " + EXERCISE_TABLE_NAME + " ( " + EXERCISE_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EXERCISE_COL2 + " TEXT, " + EXERCISE_COL3 + " INTEGER, " + EXERCISE_COL4 + " INTEGER);";
         String createTablePlannedExercise = "CREATE TABLE " + PLANNED_EXERCISE_TABLE_NAME + " ( " + PLANNED_EXERCISE_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                PLANNED_EXERCISE_COL2 + " INTEGER, " + PLANNED_EXERCISE_COL3 + " INTEGER, " + PLANNED_EXERCISE_COL4 + " INTEGER, " + PLANNED_EXERCISE_COL5 + " TEXT);";
+                PLANNED_EXERCISE_COL2 + " INTEGER, " + PLANNED_EXERCISE_COL3 + " INTEGER, " + PLANNED_EXERCISE_COL4 + " INTEGER, " + PLANNED_EXERCISE_COL5 + " TEXT, " + PLANNED_EXERCISE_COL6 + " TEXT);";
         String createTableGoal = "CREATE TABLE " + GOAL_TABLE_NAME + " ( " + GOAL_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + GOAL_COL2 + " TEXT, " + GOAL_COL3 + " TEXT, " + GOAL_COL4 + " INTEGER);";
         String createTableWeight = "CREATE TABLE " + WEIGHT_TABLE_NAME + " ( " + WEIGHT_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + WEIGHT_COL2 + " TEXT, " + WEIGHT_COL3 + " INTEGER);";
 
@@ -130,13 +131,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //========PLANNED=EXERCISE======================================================
 
-    public boolean addPlannedExerciseData(int exerciseID, int trainTime, int repeatCount, String dateAndTime) {
+    public boolean addPlannedExerciseData(int exerciseID, int trainTime, int repeatCount, String date,String time) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PLANNED_EXERCISE_COL2, exerciseID);
         contentValues.put(PLANNED_EXERCISE_COL3, trainTime);
         contentValues.put(PLANNED_EXERCISE_COL4, repeatCount);
-        contentValues.put(PLANNED_EXERCISE_COL5, dateAndTime);
+        contentValues.put(PLANNED_EXERCISE_COL5, date);
+        contentValues.put(PLANNED_EXERCISE_COL6, time);
         Log.d(PLANNED_EXERCISE_TABLE_NAME, "adding plannedExercise: " + exerciseID);
         long results = db.insert(PLANNED_EXERCISE_TABLE_NAME, null, contentValues);
         return (results != -1);
@@ -170,7 +172,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         List<PlannedExercise> plannedExercises = new ArrayList<>();
         while(data.moveToNext()){
             try {
-                plannedExercises.add(new PlannedExercise(data.getInt(0), data.getInt(1), data.getInt(2), data.getInt(3), DateFormatter.dateFromString(data.getString(4))));
+//                plannedExercises.add(new PlannedExercise(data.getInt(0),
+//                        data.getInt(1),
+//                        data.getInt(2),
+//                        data.getInt(3),
+//                        DateFormatter.dateFromString(data.getString(4))),
+//                        data.getString(5));
+                plannedExercises.add(new PlannedExercise(data.getInt(0),data.getInt(1),data.getInt(2),data.getInt(3),DateFormatter.dateFromString(data.getString(4)),data.getString(5)));
             }
             catch(Exception e) {
                 e.printStackTrace();

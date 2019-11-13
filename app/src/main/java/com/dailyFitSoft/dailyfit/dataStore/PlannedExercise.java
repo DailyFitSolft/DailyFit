@@ -1,5 +1,7 @@
 package com.dailyFitSoft.dailyfit.dataStore;
 
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 
 public class PlannedExercise {
@@ -8,14 +10,16 @@ public class PlannedExercise {
     private int exerciseID;
     private int trainTime;
     private int repeatCount;
-    private Date plannedDateAndTime;
+    private Date plannedDate;
+    private String plannedTime;
 
-    public PlannedExercise(int ID, int exerciseID, int trainTime, int repeatCount, Date plannedDateAndTime) {
+    public PlannedExercise(int ID, int exerciseID, int trainTime, int repeatCount, Date plannedDate, String plannedTime) {
         this.ID = ID;
         this.exerciseID = exerciseID;
         this.trainTime = trainTime;
         this.repeatCount = repeatCount;
-        this.plannedDateAndTime = plannedDateAndTime;
+        this.plannedDate = plannedDate;
+        this.plannedTime= plannedTime;
     }
 
     public int getID() {
@@ -34,7 +38,13 @@ public class PlannedExercise {
         return repeatCount;
     }
 
-    public Date getPlannedDateAndTime() {
-        return plannedDateAndTime;
+    public Date getPlannedDate() {
+        return plannedDate;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return " Czas: " + trainTime + " Powtorzenia: " + repeatCount + " Godzina: " + plannedTime ;
     }
 }
