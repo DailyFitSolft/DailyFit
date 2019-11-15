@@ -44,6 +44,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String WEIGHT_COL2 = "Date";
     private static final String WEIGHT_COL3 = "Weight";
 
+    private static final String TRAINING_TABLE_NAME = "training";
+    private static final String TRAINING_COL1 = "ID";
+    private static final String TRAINING_COL2 = "ActivityType";
+    private static final String TRAINING_COL3 = "StartTime";
+    private static final String TRAINING_COL4 = "StopTime";
+    private static final String TRAINING_COL5 = "StartDate";
+
+
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //dodawanie celow
@@ -58,11 +66,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 PLANNED_EXERCISE_COL2 + " INTEGER, " + PLANNED_EXERCISE_COL3 + " INTEGER, " + PLANNED_EXERCISE_COL4 + " INTEGER, " + PLANNED_EXERCISE_COL5 + " TEXT, " + PLANNED_EXERCISE_COL6 + " TEXT);";
         String createTableGoal = "CREATE TABLE " + GOAL_TABLE_NAME + " ( " + GOAL_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + GOAL_COL2 + " TEXT, " + GOAL_COL3 + " TEXT, " + GOAL_COL4 + " INTEGER);";
         String createTableWeight = "CREATE TABLE " + WEIGHT_TABLE_NAME + " ( " + WEIGHT_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + WEIGHT_COL2 + " TEXT, " + WEIGHT_COL3 + " INTEGER);";
+        String createTableTraining = "CREATE TABLE " + TRAINING_TABLE_NAME + " ( " + TRAINING_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TRAINING_COL2 + " TEXT, " + TRAINING_COL3 + " TEXT, " + TRAINING_COL4 + " TEXT, " + TRAINING_COL5 + " TEXT);";
+
 
         sqLiteDatabase.execSQL(createTableExercise);
         sqLiteDatabase.execSQL(createTablePlannedExercise);
         sqLiteDatabase.execSQL(createTableGoal);
         sqLiteDatabase.execSQL(createTableWeight);
+        sqLiteDatabase.execSQL(createTableTraining);
+
         sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
             ") VALUES ('Bieganie', 5, 20)");
         sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
@@ -77,8 +89,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 GOAL_COL4 + ") VALUES ('Przejdź 5 km!', '06-11-2019 00:00:00', '0')");
 
 
-
-
     }
 
     @Override
@@ -87,6 +97,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PLANNED_EXERCISE_TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GOAL_TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WEIGHT_TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TRAINING_TABLE_NAME);
 
         onCreate(sqLiteDatabase);
     }
@@ -311,4 +322,67 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public List<Weight> getWeightList(Date date){
         return getWeightList(getWeightData(date));
     }
+
+    //==========GOALS=================================================================
+
+    public boolean addTrainingData(String activityType, String startTime, String stopTime, String startDate) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TRAINING_COL2, activityType);
+        contentValues.put(TRAINING_COL3, startTime);
+        contentValues.put(TRAINING_COL4, stopTime);
+        contentValues.put(TRAINING_COL5, startDate);
+
+
+        Log.d(TRAINING_TABLE_NAME, "adding training: " + activityType + ", date and time: " + startDate + " " + startTime + " - " + stopTime);
+        long results = db.insert(TRAINING_TABLE_NAME, null, contentValues);
+        return (results != -1);
+    }
+
+    private Cursor getTrainingData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TRAINING_TABLE_NAME;
+        return db.rawQuery(query, null);
+    }
+
+    private Cursor getTrainingData(Date date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TRAINING_TABLE_NAME + " WHERE " + TRAINING_COL5 + " = " + DateFormatter.stringFromDate(date);
+        return db.rawQuery(query, null);
+    }
+
+    public void dropTraining(int ID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TRAINING_TABLE_NAME + " WHERE " + TRAINING_COL1 + " = " + ID;
+        db.execSQL(query);
+    }
+
+    public void clearTrainingTable(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TRAINING_TABLE_NAME + " WHERE 1=1";
+        db.execSQL(query);
+    }
+
+    private List<Training> getTrainingsList(Cursor data){
+        List<Training> trainings = new ArrayList<>();
+        while(data.moveToNext()){
+            try {
+                trainings.add(new Training(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), DateFormatter.dateFromString(data.getString(4))));
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return trainings;
+    }
+
+    public List<Training> getTrainingsList(){
+        return getTrainingsList(getTrainingData());
+    }
+
+    public List<Training> getTrainingsList(Date date){
+        return getTrainingsList(getTrainingData(date));
+    }
 }
+
+
