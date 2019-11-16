@@ -65,7 +65,11 @@ public class HomeFragment extends Fragment {
         settingExerciseList(root);
 
         return root;
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void settingCalendar(View root)
