@@ -16,7 +16,7 @@ import java.util.List;
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "DailyFit_DB";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
 
     private static final String EXERCISE_TABLE_NAME = "exercises";
@@ -35,14 +35,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final String GOAL_TABLE_NAME = "goals";
     private static final String GOAL_COL1 = "ID";
-    private static final String GOAL_COL2 = "Name";
+    private static final String GOAL_COL2 = "GoalType";
     private static final String GOAL_COL3 = "EndDate";
     private static final String GOAL_COL4 = "Achived";
+    private static final String GOAL_COL5 = "AchivedValue";
+    private static final String GOAL_COL6 =  "ValueToAchive";
 
     private static final String WEIGHT_TABLE_NAME = "weight";
     private static final String WEIGHT_COL1 = "ID";
     private static final String WEIGHT_COL2 = "Date";
     private static final String WEIGHT_COL3 = "Weight";
+
+    private static final String TRAINING_TABLE_NAME = "training";
+    private static final String TRAINING_COL1 = "ID";
+    private static final String TRAINING_COL2 = "ActivityType";
+    private static final String TRAINING_COL3 = "StartTime";
+    private static final String TRAINING_COL4 = "StopTime";
+    private static final String TRAINING_COL5 = "StartDate";
+
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,27 +66,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String createTableExercise = "CREATE TABLE " + EXERCISE_TABLE_NAME + " ( " + EXERCISE_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EXERCISE_COL2 + " TEXT, " + EXERCISE_COL3 + " INTEGER, " + EXERCISE_COL4 + " INTEGER);";
         String createTablePlannedExercise = "CREATE TABLE " + PLANNED_EXERCISE_TABLE_NAME + " ( " + PLANNED_EXERCISE_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 PLANNED_EXERCISE_COL2 + " INTEGER, " + PLANNED_EXERCISE_COL3 + " INTEGER, " + PLANNED_EXERCISE_COL4 + " INTEGER, " + PLANNED_EXERCISE_COL5 + " TEXT, " + PLANNED_EXERCISE_COL6 + " TEXT);";
-        String createTableGoal = "CREATE TABLE " + GOAL_TABLE_NAME + " ( " + GOAL_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + GOAL_COL2 + " TEXT, " + GOAL_COL3 + " TEXT, " + GOAL_COL4 + " INTEGER);";
+        String createTableGoal = "CREATE TABLE " + GOAL_TABLE_NAME + " ( " + GOAL_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + GOAL_COL2 + " INTEGER, " + GOAL_COL3 + " TEXT, " + GOAL_COL4 + " INTEGER, " + GOAL_COL5 + " INTEGER, " + GOAL_COL6 + " INTEGER);";
         String createTableWeight = "CREATE TABLE " + WEIGHT_TABLE_NAME + " ( " + WEIGHT_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + WEIGHT_COL2 + " TEXT, " + WEIGHT_COL3 + " INTEGER);";
+        String createTableTraining = "CREATE TABLE " + TRAINING_TABLE_NAME + " ( " + TRAINING_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TRAINING_COL2 + " TEXT, " + TRAINING_COL3 + " TEXT, " + TRAINING_COL4 + " TEXT, " + TRAINING_COL5 + " TEXT);";
+
 
         sqLiteDatabase.execSQL(createTableExercise);
         sqLiteDatabase.execSQL(createTablePlannedExercise);
         sqLiteDatabase.execSQL(createTableGoal);
         sqLiteDatabase.execSQL(createTableWeight);
+        sqLiteDatabase.execSQL(createTableTraining);
+
         sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
             ") VALUES ('Bieganie', 5, 20)");
         sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
                 ") VALUES ('Nordic walking', 3, 10)");
         sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
                 ") VALUES ('Piłka nożna', 7, 25)");
+//        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
+//                GOAL_COL4 + ") VALUES ('Przebiegnij 10 km!', '20-11-2019 00:00:00', '0')");
+//        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
+//                GOAL_COL4 + ") VALUES ('Przebiegnij 5 km!', '08-11-2019 00:00:00', '1')");
         sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
-                GOAL_COL4 + ") VALUES ('Przebiegnij 10 km!', '20-11-2019 00:00:00', '0')");
-        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
-                GOAL_COL4 + ") VALUES ('Przebiegnij 5 km!', '08-11-2019 00:00:00', '1')");
-        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
-                GOAL_COL4 + ") VALUES ('Przejdź 5 km!', '06-11-2019 00:00:00', '0')");
-
-
+                GOAL_COL4 + "," + GOAL_COL5  + "," + GOAL_COL6 + ") VALUES (1, '06-11-2019 00:00:00', '0', 100, 200)");
 
 
     }
@@ -87,8 +99,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + PLANNED_EXERCISE_TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GOAL_TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + WEIGHT_TABLE_NAME);
-        onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TRAINING_TABLE_NAME);
 
+        onCreate(sqLiteDatabase);
     }
 
     //=========EXERCISE===========================================================
@@ -199,13 +212,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //==========GOALS=================================================================
 
-    public boolean addGoalData(String goalName, String endDate, boolean isAchived) {
+    public boolean addGoalData(GoalType goalType, String endDate, boolean isAchived, int valueToAchive, int achivedValue) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(GOAL_COL2, goalName);
+        contentValues.put(GOAL_COL2, goalType.getValue());
         contentValues.put(GOAL_COL3, endDate);
         contentValues.put(GOAL_COL4, !isAchived ? 0 : 1);
-        Log.d(GOAL_TABLE_NAME, "adding goal: " + goalName);
+        contentValues.put(GOAL_COL5, achivedValue);
+        contentValues.put(GOAL_COL6, valueToAchive);
+        Log.d(GOAL_TABLE_NAME, "adding goal: " + goalType.toString());
+        long results = db.insert(GOAL_TABLE_NAME, null, contentValues);
+        return (results != -1);
+    }
+
+    public boolean addGoalData(Goal goal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GOAL_COL2, goal.getGoalType().getValue());
+        contentValues.put(GOAL_COL3, DateFormatter.stringFromDate(goal.getEndDate()));
+        contentValues.put(GOAL_COL4, !goal.isAchived()? 0 : 1);
+        contentValues.put(GOAL_COL5, goal.getAchivedValue());
+        contentValues.put(GOAL_COL6, goal.getValueToAchive());
+        Log.d(GOAL_TABLE_NAME, "adding goal: " + goal.getGoalType().toString());
         long results = db.insert(GOAL_TABLE_NAME, null, contentValues);
         return (results != -1);
     }
@@ -238,7 +266,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         List<Goal> goals = new ArrayList<>();
         while(data.moveToNext()){
             try {
-                goals.add(new Goal(data.getInt(0), data.getString(1), DateFormatter.dateFromString(data.getString(2)), data.getInt(3) != 0));
+                goals.add(new Goal(data.getInt(0), GoalType.valueOf(data.getInt(1)), DateFormatter.dateFromString(data.getString(2)), data.getInt(3) != 0, data.getInt(4), data.getInt(5)));
             }
             catch(Exception e) {
                 e.printStackTrace();
@@ -311,4 +339,67 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public List<Weight> getWeightList(Date date){
         return getWeightList(getWeightData(date));
     }
+
+    //==========GOALS=================================================================
+
+    public boolean addTrainingData(String activityType, String startTime, String stopTime, String startDate) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TRAINING_COL2, activityType);
+        contentValues.put(TRAINING_COL3, startTime);
+        contentValues.put(TRAINING_COL4, stopTime);
+        contentValues.put(TRAINING_COL5, startDate);
+
+
+        Log.d(TRAINING_TABLE_NAME, "adding training: " + activityType + ", date and time: " + startDate + " " + startTime + " - " + stopTime);
+        long results = db.insert(TRAINING_TABLE_NAME, null, contentValues);
+        return (results != -1);
+    }
+
+    private Cursor getTrainingData(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TRAINING_TABLE_NAME;
+        return db.rawQuery(query, null);
+    }
+
+    private Cursor getTrainingData(Date date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TRAINING_TABLE_NAME + " WHERE " + TRAINING_COL5 + " = " + DateFormatter.stringFromDate(date);
+        return db.rawQuery(query, null);
+    }
+
+    public void dropTraining(int ID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TRAINING_TABLE_NAME + " WHERE " + TRAINING_COL1 + " = " + ID;
+        db.execSQL(query);
+    }
+
+    public void clearTrainingTable(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TRAINING_TABLE_NAME + " WHERE 1=1";
+        db.execSQL(query);
+    }
+
+    private List<Training> getTrainingsList(Cursor data){
+        List<Training> trainings = new ArrayList<>();
+        while(data.moveToNext()){
+            try {
+                trainings.add(new Training(data.getInt(0), data.getString(1), data.getString(2), data.getString(3), DateFormatter.dateFromString(data.getString(4))));
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return trainings;
+    }
+
+    public List<Training> getTrainingsList(){
+        return getTrainingsList(getTrainingData());
+    }
+
+    public List<Training> getTrainingsList(Date date){
+        return getTrainingsList(getTrainingData(date));
+    }
 }
+
+

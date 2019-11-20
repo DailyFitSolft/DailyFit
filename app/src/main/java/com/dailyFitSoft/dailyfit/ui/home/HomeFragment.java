@@ -63,8 +63,13 @@ public class HomeFragment extends Fragment {
         settingExerciseList(root);
 
         return root;
-
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private void settingCalendar(View root)
     {
         homeCalendar = root.findViewById(R.id.home_fragment_calendar);
@@ -82,7 +87,6 @@ public class HomeFragment extends Fragment {
         exerciseListView = root.findViewById(R.id.list_of_exercises);
         exerciseListDataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,exercisesOnDay);
         exerciseListView.setAdapter(exerciseListDataAdapter);
-
     }
 
     private void changeFloatingActionButton()
@@ -134,6 +138,7 @@ public class HomeFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
                 dialog.cancel();
+                refreshListOfExercises();
             }
         });
         alertDialog.show();
