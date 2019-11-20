@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,8 +93,6 @@ public class ExerciseFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showPopupOfAddingNewExercise();
-                System.out.println("kliknales guzik");
-
 
             }
         });
@@ -107,8 +105,6 @@ public class ExerciseFragment extends Fragment {
         final View alertDialogView = inflater.inflate(R.layout.popup_add_new_exercise, null);
         alertDialog.setView(alertDialogView);
 
-
-
         final EditText nameOfExercise = alertDialogView.findViewById(R.id.name_of_exercise);
         final EditText burntCalories = alertDialogView.findViewById(R.id.burnt_calories);
         final EditText difficulty = alertDialogView.findViewById(R.id.difficulty);
@@ -118,7 +114,6 @@ public class ExerciseFragment extends Fragment {
 
         alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
                 dataBaseHelper.addExerciseData(nameOfExercise.getText().toString(), Integer.parseInt(difficulty.getText().toString()), Integer.parseInt(burntCalories.getText().toString()));
                 dialog.cancel();
             }
