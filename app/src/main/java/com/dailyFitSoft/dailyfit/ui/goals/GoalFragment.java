@@ -22,12 +22,15 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class GoalFragment extends Fragment {
 
     private GoalViewModel goalViewModel;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private ListView listView;
+    private GoalAdapter goalAdapter;
 
     @Nullable
     @Override
@@ -38,36 +41,46 @@ public class GoalFragment extends Fragment {
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
 
-        ArrayList<Goal> goals = new ArrayList<>();
-
-        ArrayList<String> goalsToShow = new ArrayList<>();
-
+        List<Goal> goals = new ArrayList<>();
         try{
-            goals = (ArrayList<Goal>) dataBaseHelper.getGoalList();
+            goals =  dataBaseHelper.getGoalList();
         } catch (NullPointerException ex){
             System.out.println("Database is empty!");
         }
 
-        for (Goal goal:goals){
-            if(goal.isAchived()){
-                goalsToShow.add(goal.getName() + " Zaliczone!");
-            }else if(!goal.isAchived() && goal.getEndDate().before(new Date())){
-                goalsToShow.add(goal.getName() + " Nie udało się :(");
-            } else if(!goal.isAchived() && goal.getEndDate().after(new Date())){
-                goalsToShow.add(goal.getName() + " W trakcie. Koniec celu: " + simpleDateFormat.format(goal.getEndDate()));
-            }
-        }
+        listView = root.findViewById(R.id.goalListView);
 
+        goalAdapter = new GoalAdapter(getContext(), (ArrayList<Goal>) goals);
+        listView.setAdapter(goalAdapter);
 
-        ListView listGoalView = root.findViewById(R.id.goalListView);
-
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                goalsToShow
-        );
-
-        listGoalView.setAdapter(listViewAdapter);
+//        ArrayList<String> goalsToShow = new ArrayList<>();
+//
+//        try{
+//            goals = (ArrayList<Goal>) dataBaseHelper.getGoalList();
+//        } catch (NullPointerException ex){
+//            System.out.println("Database is empty!");
+//        }
+//
+//        for (Goal goal:goals){
+//            if(goal.isAchived()){
+//                goalsToShow.add(goal.getName() + " Zaliczone!");
+//            }else if(!goal.isAchived() && goal.getEndDate().before(new Date())){
+//                goalsToShow.add(goal.getName() + " Nie udało się :(");
+//            } else if(!goal.isAchived() && goal.getEndDate().after(new Date())){
+//                goalsToShow.add(goal.getName() + " W trakcie. Koniec celu: " + simpleDateFormat.format(goal.getEndDate()));
+//            }
+//        }
+//
+//
+//        ListView listGoalView = root.findViewById(R.id.goalListView);
+//
+//        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
+//                getActivity(),
+//                android.R.layout.simple_list_item_1,
+//                goalsToShow
+//        );
+//
+//        listGoalView.setAdapter(listViewAdapter);
         return root;
     }
 }

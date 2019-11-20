@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/name_of_goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="@string/textview"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/goal_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_of_goal"
+        android:layout_margin="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/textview"
+        android:textSize="20sp" />
+
+    <CheckBox
+        android:id="@+id/is_goal_achived"
+        style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="false"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:checked="false"
+        android:clickable="false"
+        android:scrollbarSize="4sp"
+        android:textSize="12sp"
+        android:scaleX="2.5"
+        android:scaleY="2.5"/>
+
+</RelativeLayout>
