@@ -10,8 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -26,8 +25,7 @@ import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+
 
 public class ExerciseFragment extends Fragment {
 
@@ -71,12 +69,23 @@ public class ExerciseFragment extends Fragment {
         listView.setAdapter(listViewAdapter);
 
 
+        listView.setLongClickable(true);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                // TODO Auto-generated method stub
 
-       // final TextView textView = root.findViewById(R.id.text_home);
+                showPopupOfDeletingExercise(pos);
+                return true;
+            }
+        });
+
+
+
         exerciseViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                //textView.setText(s);
                 changeFloatingActionButton();
             }
         });
@@ -110,16 +119,53 @@ public class ExerciseFragment extends Fragment {
         final EditText difficulty = alertDialogView.findViewById(R.id.difficulty);
 
 
-
-
         alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                dataBaseHelper.addExerciseData(nameOfExercise.getText().toString(), Integer.parseInt(difficulty.getText().toString()), Integer.parseInt(burntCalories.getText().toString()));
+                try {
+                    dataBaseHelper.addExerciseData(nameOfExercise.getText().toString(), Integer.parseInt(difficulty.getText().toString()), Integer.parseInt(burntCalories.getText().toString()));
+                }
+                catch(NumberFormatException nfe){
+                    Toast.makeText(getContext(),"Wszystkie pola musza byc wypelnione",Toast.LENGTH_LONG).show();
+                }
                 dialog.cancel();
             }
         });
         alertDialog.show();
 
     }
+
+    public void showPopupOfDeletingExercise(final int position){
+
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View alertDialogView = inflater.inflate(R.layout.popup_delete_exercise, null);
+        alertDialog.setView(alertDialogView);
+
+        alertDialog.setPositiveButton("Delete exercise", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                deleteExercise(position);
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+
+    }
+
+    public void deleteExercise(int position){
+
+        ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+
+        try {
+            exercises = (ArrayList<Exercise>) dataBaseHelper.getExerciseList();
+        }catch (NullPointerException ex){
+            System.out.println("Pusta baza");
+        }
+
+        Exercise exercise = exercises.get(position);
+        dataBaseHelper.dropExercise(exercise.getID());
+
+
+    }
+
 
 }
