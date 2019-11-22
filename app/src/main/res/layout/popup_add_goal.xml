@@ -18,39 +18,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/date_of_exercise"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sample Date"
-            android:textAlignment="center"
-            android:textSize="18sp" />
         <Spinner
-            android:id="@+id/exercise_selector"
+            android:id="@+id/goal_selector"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAlignment="center" />
 
         <EditText
-            android:id="@+id/number_of_repeats"
+            android:id="@+id/goal_value_to_achive"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Number of repeats"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/time_of_exercise"
+            android:inputType="number"
+            android:hint="Value to achive" />
+        <CalendarView
+            android:id="@+id/goal_add_calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Time of exercise"
-            android:inputType="number" />
-
-        <TimePicker
-            android:id="@+id/time_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_marginTop="32dp" />
 
 
 

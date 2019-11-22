@@ -18,43 +18,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/date_of_exercise"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sample Date"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-        <Spinner
-            android:id="@+id/exercise_selector"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAlignment="center" />
-
         <EditText
-            android:id="@+id/number_of_repeats"
+            android:id="@+id/name_of_exercise"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Number of repeats"
-            android:inputType="number" />
+            android:hint="Nazwa cwiczenia"
+            android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/time_of_exercise"
+            android:id="@+id/difficulty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Time of exercise"
+            android:hint="Trudnosc cwiczenia"
             android:inputType="number" />
 
-        <TimePicker
-            android:id="@+id/time_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-
-
+        <EditText
+            android:id="@+id/burnt_calories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Spalone kalorie"
+            android:inputType="number" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
