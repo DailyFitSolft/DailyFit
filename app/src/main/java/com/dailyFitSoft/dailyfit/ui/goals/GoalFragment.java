@@ -72,14 +72,20 @@ public class GoalFragment extends Fragment {
             }
         }
 
-
-        ListView listGoalView = root.findViewById(R.id.goalListView);
-
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
+        final ListView listGoalView = root.findViewById(R.id.goalListView);
+        final ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 goalsToShow
         );
+
+        listGoalView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                return false;
+            }
+        });
 
         goalViewModel.getText().observe(this, new Observer<String>() {
             @Override
