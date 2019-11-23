@@ -18,4 +18,5 @@
     <string name="nameofgoal">TextView</string>
     <string name="goalenddate">TextView</string>
     <string name="notsucceded">TextView</string>
+    <string name="maxvalueprogress">TextView</string>
 </resources>

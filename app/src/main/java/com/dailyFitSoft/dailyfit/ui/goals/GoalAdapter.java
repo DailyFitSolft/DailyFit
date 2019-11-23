@@ -50,18 +50,31 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         Goal currentGoal = goalList.get(position);
 
         TextView name = (TextView) listItem.findViewById(R.id.name_of_goal);
-        name.setText(currentGoal.getName());
+        name.setText(currentGoal.getGoalType().toString());
 
         TextView end = (TextView) listItem.findViewById(R.id.goal_end_date);
         end.setText(format.format(currentGoal.getEndDate()));
 
         TextView notsucced = (TextView) listItem.findViewById(R.id.notsucceded);
 
+        TextView max = (TextView) listItem.findViewById(R.id.maxValueProgress);
+        switch (currentGoal.getGoalType()){
+            case CZAS_W_RUCHU:
+                max.setText(String.valueOf(currentGoal.getValueToAchive()) + " min");
+                break;
+            case SPALONE_KALORIE:
+                max.setText(String.valueOf(currentGoal.getValueToAchive()) + " kcal");
+                break;
+        }
+
         ProgressBar progress = (ProgressBar) listItem.findViewById(R.id.goalProgressBar);
+        progress.setMax(currentGoal.getValueToAchive());
+        progress.setProgress(currentGoal.getAchivedValue());
 
         CheckBox checkBox = (CheckBox) listItem.findViewById(R.id.is_goal_achived);
         if(currentGoal.isAchived()){
             checkBox.setChecked(true);
+            progress.setProgress(currentGoal.getAchivedValue());
         }else if(!currentGoal.isAchived() && currentGoal.getEndDate().before(new Date())){
             name.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             end.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);

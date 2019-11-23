@@ -43,4 +43,8 @@ public class Goal {
     public int getAchivedValue() {
         return achivedValue;
     }
+
+    public void setAchivedValue(int achivedValue) {
+        this.achivedValue = achivedValue;
+    }
 }

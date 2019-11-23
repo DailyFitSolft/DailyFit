@@ -94,24 +94,9 @@ public class GoalFragment extends Fragment {
 //        );
 //
 //        listGoalView.setAdapter(listViewAdapter);
-        for (Goal goal:goals){
-            if(goal.isAchived()){
-                goalsToShow.add(goal.getGoalType().toString() + " Zaliczone!");
-            }else if(!goal.isAchived() && goal.getEndDate().before(new Date())){
-                goalsToShow.add(goal.getGoalType().toString() + " Nie udało się :(");
-            } else if(!goal.isAchived() && goal.getEndDate().after(new Date())){
-                goalsToShow.add(goal.getGoalType().toString() + " W trakcie. Koniec celu: " + simpleDateFormat.format(goal.getEndDate()));
-            }
-        }
 
 
-        ListView listGoalView = root.findViewById(R.id.goalListView);
 
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                goalsToShow
-        );
 
         goalViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -120,7 +105,6 @@ public class GoalFragment extends Fragment {
             }
         });
 
-        listGoalView.setAdapter(listViewAdapter);
         return root;
     }
 
