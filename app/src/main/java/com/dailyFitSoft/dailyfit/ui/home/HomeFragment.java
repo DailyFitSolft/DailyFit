@@ -3,7 +3,6 @@ package com.dailyFitSoft.dailyfit.ui.home;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.dailyFitSoft.dailyfit.dataStore.PlannedExercise;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 

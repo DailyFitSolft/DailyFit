@@ -15,4 +15,8 @@
     <string name="menu_send">Send</string>
 
     <string name="popup_title_add_event_to_calendar">Select exercise on : </string>
+    <string name="nameofgoal">TextView</string>
+    <string name="goalenddate">TextView</string>
+    <string name="notsucceded">TextView</string>
+    <string name="maxvalueprogress">TextView</string>
 </resources>

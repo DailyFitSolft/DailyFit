@@ -56,9 +56,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //dodawanie celow
-        //addGoalData("Przebiegnij 10km!", "2019-11-20", false);
-        //addGoalData("Przebiegnij 5km!", "2019-11-08", true);
+
     }
 
     @Override
@@ -87,8 +85,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //                GOAL_COL4 + ") VALUES ('Przebiegnij 10 km!', '20-11-2019 00:00:00', '0')");
 //        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
 //                GOAL_COL4 + ") VALUES ('Przebiegnij 5 km!', '08-11-2019 00:00:00', '1')");
-        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
-                GOAL_COL4 + "," + GOAL_COL5  + "," + GOAL_COL6 + ") VALUES (1, '06-11-2019 00:00:00', '0', 100, 200)");
+      
+        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +	
+                GOAL_COL4 + "," + GOAL_COL5  + "," + GOAL_COL6 + ") VALUES (1, '30-11-2019 00:00:00', '0', 100, 200)");
 
 
     }

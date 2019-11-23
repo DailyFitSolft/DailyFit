@@ -21,6 +21,11 @@
         android:label="Goals"
         tools:layout="@layout/fragment_goal" />
     <fragment
+        android:id="@id/nav_stopwatch"
+        android:name="com.dailyFitSoft.dailyfit.ui.stopwatch.StopwatchFragment"
+        android:label="Stopwatch"
+        tools:layout="@layout/fragment_stopwatch" />
+    <fragment
         android:id="@id/nav_gallery"
         android:name="com.dailyFitSoft.dailyfit.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
