@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -48,6 +49,9 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         }
 
         Goal currentGoal = goalList.get(position);
+
+        RelativeLayout goalItemLayout = (RelativeLayout) listItem.findViewById(R.id.goal_item_layout);
+        goalItemLayout.setTag(currentGoal.getID());
 
         TextView name = (TextView) listItem.findViewById(R.id.name_of_goal);
         name.setText(currentGoal.getGoalType().toString());
@@ -88,5 +92,11 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         }
 
         return listItem;
+    }
+
+    public void updateList(List<Goal> goalList){
+        clear();
+        addAll(goalList);
+        notifyDataSetChanged();
     }
 }
