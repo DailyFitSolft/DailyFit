@@ -65,6 +65,15 @@ public class GoalFragment extends Fragment {
 
         goalAdapter = new GoalAdapter(getContext(), (ArrayList<Goal>) goals);
         listView.setAdapter(goalAdapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+//                GoalAdapter goalAdapter = (GoalAdapter) listView.getAdapter();
+//                dataBaseHelper.dropGoal((int)view.getTag());
+                showPopupOfDeletingGoal((int) view.getTag());
+                return false;
+            }
+        });
 
 //        ArrayList<String> goalsToShow = new ArrayList<>();
 //
@@ -94,10 +103,6 @@ public class GoalFragment extends Fragment {
 //        );
 //
 //        listGoalView.setAdapter(listViewAdapter);
-
-
-
-
         goalViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -118,6 +123,21 @@ public class GoalFragment extends Fragment {
         });
     }
 
+    private void showPopupOfDeletingGoal(final int goalID){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View alerDialogView = inflater.inflate(R.layout.popup_delete_goal, null);
+        alertDialog.setView(alerDialogView);
+        alertDialog.setPositiveButton("Delete exercise", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dataBaseHelper.dropGoal(goalID);
+                goalAdapter.updateList(dataBaseHelper.getGoalList());
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
     private void showPopupOfAddingGoal(){
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder((getActivity()));
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -125,7 +145,7 @@ public class GoalFragment extends Fragment {
         alertDialog.setView(alertDialogView);
 
         final Spinner goalSelector = alertDialogView.findViewById(R.id.goal_selector);
-        ArrayAdapter<GoalType> dataFromSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, GoalType.getGoalTypeList());
+        final ArrayAdapter<GoalType> dataFromSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, GoalType.getGoalTypeList());
         goalSelector.setAdapter(dataFromSpinnerAdapter);
 
         goalSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -146,7 +166,7 @@ public class GoalFragment extends Fragment {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                dateText = day + "-" + month + "-" + year;
+                dateText = day + "-" + (month + 1) + "-" + year;
             }
         });
         alertDialog.setPositiveButton("Add goal", new DialogInterface.OnClickListener() {
@@ -154,6 +174,7 @@ public class GoalFragment extends Fragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 if(!dateText.equals("") && !valueToAchive.getText().toString().equals("")){
                     dataBaseHelper.addGoalData(tempGoalType, dateText, false, Integer.parseInt(valueToAchive.getText().toString()), 0);
+                    goalAdapter.updateList(dataBaseHelper.getGoalList());
                     dialogInterface.cancel();
                 }
             }
