@@ -20,6 +20,10 @@ public class Goal {
         this.valueToAchive = valueToAchive;
     }
 
+    public void setAchived(boolean achived) {
+        isAchived = achived;
+    }
+
     public int getID() {
         return ID;
     }
