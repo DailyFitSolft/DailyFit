@@ -2,6 +2,7 @@ package com.dailyFitSoft.dailyfit.ui.stopwatch;
 
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,10 +68,28 @@ public class StopwatchFragment extends Fragment {
                     for(Goal goal:listofgoals){
                         switch (goal.getGoalType()){
                             case CZAS_W_RUCHU:
-                                goal.setAchivedValue(goal.getAchivedValue() + (int) (chronometer.getBase()/60));
+                                int elapsedSeconds = (int)(SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
+                                int newArchivedValue = goal.getAchivedValue() + (elapsedSeconds/60);
+                                goal.setAchivedValue(newArchivedValue);
+                                dataBaseHelper.updateGoalArchivedValue(goal,newArchivedValue);
+                                if(goal.getAchivedValue()>=goal.getValueToAchive())
+                                {
+                                    goal.setAchived(true);
+                                    dataBaseHelper.setGoalArchived(goal,true);
+                                }
+
                                 break;
                             case SPALONE_KALORIE:
-                                goal.setAchivedValue(goal.getAchivedValue() + (int) (chronometer.getBase()/1800) * tempExercise.getBurnedCalories());
+                                //podzielic new archived value przez 60 zeby miec w minutach
+                                elapsedSeconds = (int)(SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
+                                newArchivedValue = (goal.getAchivedValue() + (elapsedSeconds/3600) * tempExercise.getBurnedCalories());
+                                goal.setAchivedValue(newArchivedValue);
+                                dataBaseHelper.updateGoalArchivedValue(goal,newArchivedValue);
+                                if(goal.getAchivedValue()>=goal.getValueToAchive())
+                                {
+                                    goal.setAchived(true);
+                                    dataBaseHelper.setGoalArchived(goal,true);
+                                }
                                 break;
                         }
                     }
@@ -112,6 +131,10 @@ public class StopwatchFragment extends Fragment {
 
 
         return root;
+    }
+    public void checkIfPlannedExerciseDone()
+    {
+
     }
 
 

@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment {
         homeCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                textRepresentationOfDate = dayOfMonth + "-" + month + "-" + year;
+                textRepresentationOfDate = dayOfMonth + "-" + (month+1) + "-" + year;
                 Toast.makeText(getContext(), textRepresentationOfDate,Toast.LENGTH_SHORT).show();
                 refreshListOfExercises();
             }
