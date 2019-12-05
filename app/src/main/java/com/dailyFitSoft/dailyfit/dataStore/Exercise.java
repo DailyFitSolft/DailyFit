@@ -35,6 +35,6 @@ public class Exercise {
     @NonNull
     @Override
     public String toString() {
-        return name + "\n Trudność: " + difficulty + " Spalone kalorie/godzinę ruchu: " + burnedCalories;
+        return name + "\n Trudność: " + difficulty + " Spalone kcal/godzinę ruchu: " + burnedCalories;
     }
 }

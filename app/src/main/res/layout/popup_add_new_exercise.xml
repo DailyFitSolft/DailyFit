@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Spalone kalorie/godzinę ruchu"
+            android:hint="Spalone kcal/godzinę ruchu"
             android:inputType="number" />
 
     </LinearLayout>

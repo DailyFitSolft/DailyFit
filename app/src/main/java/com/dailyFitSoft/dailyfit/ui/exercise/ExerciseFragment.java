@@ -56,12 +56,8 @@ public class ExerciseFragment extends Fragment {
         }
 
         for (Exercise exercise: exercises) {
-<<<<<<< HEAD
-            exercisesToShow.add(exercise.getName() +
-                    " \n Trudność: " + exercise.getDifficulty() + " | Spalone kalorie/godzinę ruchu: " +
-=======
-            exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalane kalorie na godzine: " +
->>>>>>> deployment
+
+            exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalone kcal/godzinę ruchu: " +
                     exercise.getBurnedCalories());
         }
 
@@ -128,24 +124,19 @@ public class ExerciseFragment extends Fragment {
         final EditText difficulty = alertDialogView.findViewById(R.id.difficulty);
 
 
-<<<<<<< HEAD
         alertDialog.setPositiveButton("Dodaj aktywność", new DialogInterface.OnClickListener() {
-=======
 
 
-        alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
-
->>>>>>> deployment
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     if (nameOfExercise.getText().toString().equals("")){
-                        Toast.makeText(getContext(),"Wszystkie pola musza byc wypelnione",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"Wszystkie pola muszą zostać wypełnione. Spróbuj jeszcze raz :)",Toast.LENGTH_LONG).show();
 
                     }else if (Integer.parseInt(difficulty.getText().toString())< 1 || Integer.parseInt(difficulty.getText().toString()) > 10){
-                        Toast.makeText(getContext(),"Trudnosc musi byc z przedzialu od 1 do 10",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"Podaj trudność z przedziału 1-10",Toast.LENGTH_LONG).show();
                     }
-                    else if (Integer.parseInt(burntCalories.getText().toString())< 0 || Integer.parseInt(difficulty.getText().toString()) > 1000) {
-                        Toast.makeText(getContext(), "Saplone kalorie, musza byc z przedzialu od 0 do 1000", Toast.LENGTH_LONG).show();
+                    else if (Integer.parseInt(burntCalories.getText().toString())< 0 || Integer.parseInt(difficulty.getText().toString()) > 2000) {
+                        Toast.makeText(getContext(), "Podaj spalone kcal z przedziału 0-2000", Toast.LENGTH_LONG).show();
                     }
                     else {
                         dataBaseHelper.addExerciseData(nameOfExercise.getText().toString(), Integer.parseInt(difficulty.getText().toString()), Integer.parseInt(burntCalories.getText().toString()));
@@ -188,7 +179,7 @@ public class ExerciseFragment extends Fragment {
         try {
             exercises = (ArrayList<Exercise>) dataBaseHelper.getExerciseList();
         }catch (NullPointerException ex){
-            System.out.println("Pusta baza");
+            System.out.println("Brak zdefiniowanych aktywności w systemie");
         }
 
         Exercise exercise = exercises.get(position);
@@ -201,7 +192,7 @@ public class ExerciseFragment extends Fragment {
         listViewAdapter.clear();
         ArrayList<String> exercisesToShow = new ArrayList<String>();
         for (Exercise exercise: exercises) {
-            exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalane kalorie na godzine: " +
+            exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalone kcal/godzinę ruchu: " +
                     exercise.getBurnedCalories());
         }
         listViewAdapter.addAll(exercisesToShow);
