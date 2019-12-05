@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Number of repeats"
+            android:hint="Liczba powtórzeń"
             android:inputType="number" />
 
         <EditText
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Time of exercise"
+            android:hint="Czas ćwiczeń [minuty]"
             android:inputType="number" />
 
         <TimePicker

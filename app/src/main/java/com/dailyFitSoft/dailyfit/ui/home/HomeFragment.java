@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment {
         alertDialog.setView(alertDialogView);
 
         TextView dateOfExerciseText = alertDialogView.findViewById(R.id.date_of_exercise);
-        dateOfExerciseText.setText("Exercise on: " + textRepresentationOfDate);
+        dateOfExerciseText.setText("Data ćwiczenia: " + textRepresentationOfDate);
 
         final Spinner exerciseSelector = alertDialogView.findViewById(R.id.exercise_selector);
         List<Exercise> listOfExercisesFromDatabase = new LinkedList<>();
@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment {
         final EditText numberOfRepeats = alertDialogView.findViewById(R.id.number_of_repeats);
         final EditText timeOfExercise = alertDialogView.findViewById(R.id.time_of_exercise);
         final TimePicker timePicker = alertDialogView.findViewById(R.id.time_picker);
-        alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Zaakceptuj plan", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
                 dialog.cancel();
