@@ -2,6 +2,8 @@ package com.dailyFitSoft.dailyfit.ui.home;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +31,10 @@ import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.dailyFitSoft.dailyfit.dataStore.PlannedExercise;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
 
@@ -72,13 +76,43 @@ public class HomeFragment extends Fragment {
 
     private void settingCalendar(View root)
     {
+
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());
+        textRepresentationOfDate=formatter.format(date);
+
         homeCalendar = root.findViewById(R.id.home_fragment_calendar);
         homeCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+
                 textRepresentationOfDate = dayOfMonth + "-" + (month+1) + "-" + year;
                 Toast.makeText(getContext(), textRepresentationOfDate,Toast.LENGTH_SHORT).show();
                 refreshListOfExercises();
+
+                try {
+
+                    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = new Date(System.currentTimeMillis());
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    Date date_today = sdf.parse(formatter.format(date));
+                    Date date_clicked = sdf.parse(year + "-" + (month+1) + "-" + dayOfMonth);
+                    if(date_clicked.before(date_today))
+                    {
+                        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+                        fab.setClickable(false);
+                    }
+                    else
+                    {
+                        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+                        fab.setClickable(true);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
@@ -111,6 +145,11 @@ public class HomeFragment extends Fragment {
 
         final Spinner exerciseSelector = alertDialogView.findViewById(R.id.exercise_selector);
         List<Exercise> listOfExercisesFromDatabase = new LinkedList<>();
+        if(dataBaseHelper.getExerciseList().isEmpty())
+        {
+            Toast.makeText(getContext(), "NO VAIABLE EXERCIES IN DATABASE!",Toast.LENGTH_SHORT).show();
+            return;
+        }
         for (Exercise e: dataBaseHelper.getExerciseList())
         {
             listOfExercisesFromDatabase.add(e);
@@ -136,9 +175,26 @@ public class HomeFragment extends Fragment {
         final TimePicker timePicker = alertDialogView.findViewById(R.id.time_picker);
         alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
-                dialog.cancel();
-                refreshListOfExercises();
+                if(numberOfRepeats.getText().toString().isEmpty() || timeOfExercise.getText().toString().isEmpty())
+                {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                    alertDialog.setTitle("Error");
+                    alertDialog.setMessage("One of input value is null! Please enter correct value next time :)");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+                else
+                {
+                    dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
+                    dialog.cancel();
+                    refreshListOfExercises();
+                }
+
             }
         });
         alertDialog.show();
