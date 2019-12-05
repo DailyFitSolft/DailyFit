@@ -282,6 +282,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return getGoalList(getGoalData(date));
     }
 
+    public void updateGoalArchivedValue(Goal goal,int newValue)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + GOAL_TABLE_NAME + " SET " + GOAL_COL5 + " = " + newValue + " WHERE " + GOAL_COL1 + " = " + goal.getID();
+        db.execSQL(query);
+        Log.d(GOAL_TABLE_NAME, "updated goal: " + goal.getID() + " new value:" + newValue);
+    }
+    public void setGoalArchived(Goal goal,boolean archived)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + GOAL_TABLE_NAME + " SET " + GOAL_COL4+ " = " + (!archived? 0 : 1) + " WHERE " + GOAL_COL1 + " = " + goal.getID();
+        db.execSQL(query);
+        Log.d(GOAL_TABLE_NAME, "updated goal: " + goal.getID() + " set archived?:" + goal.isAchived());
+    }
+
+
+
     //=========WEIGHT===============================================================
 
     public boolean addWeightData(String date, float weight){

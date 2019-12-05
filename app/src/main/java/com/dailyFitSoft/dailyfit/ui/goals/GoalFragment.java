@@ -28,11 +28,14 @@ import com.dailyFitSoft.dailyfit.dataStore.GoalType;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class GoalFragment extends Fragment {
@@ -138,6 +141,21 @@ public class GoalFragment extends Fragment {
         alertDialog.show();
     }
 
+    private void showErrorDialog(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View alerDialogView = inflater.inflate(R.layout.popup_delete_goal, null);
+        alertDialog.setView(alerDialogView);
+        TextView text = alerDialogView.findViewById(R.id.delete_goal_text);
+        text.setText("Error appeared because of wrong date or wrong input value");
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
     private void showPopupOfAddingGoal(){
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder((getActivity()));
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -147,6 +165,8 @@ public class GoalFragment extends Fragment {
         final Spinner goalSelector = alertDialogView.findViewById(R.id.goal_selector);
         final ArrayAdapter<GoalType> dataFromSpinnerAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, GoalType.getGoalTypeList());
         goalSelector.setAdapter(dataFromSpinnerAdapter);
+
+        dateText = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
         goalSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -162,13 +182,16 @@ public class GoalFragment extends Fragment {
 
         final EditText valueToAchive = alertDialogView.findViewById(R.id.goal_value_to_achive);
 
-        CalendarView calendarView = alertDialogView.findViewById(R.id.goal_add_calendar);
+        final CalendarView calendarView = alertDialogView.findViewById(R.id.goal_add_calendar);
+        calendarView.setMinDate(new Date().getTime());
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 dateText = day + "-" + (month + 1) + "-" + year;
             }
         });
+
+
         alertDialog.setPositiveButton("Add goal", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -177,6 +200,8 @@ public class GoalFragment extends Fragment {
                     goalAdapter.updateList(dataBaseHelper.getGoalList());
                     dialogInterface.cancel();
                 }
+                else
+                    showErrorDialog();
             }
         });
         alertDialog.show();
