@@ -74,8 +74,10 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         ProgressBar progress = (ProgressBar) listItem.findViewById(R.id.goalProgressBar);
         progress.setMax(currentGoal.getValueToAchive());
         progress.setProgress(currentGoal.getAchivedValue());
-
+        currentGoal.getEndDate().setTime(currentGoal.getEndDate().getTime() + (1000* 60*60*23 + 1000*60*59));
         CheckBox checkBox = (CheckBox) listItem.findViewById(R.id.is_goal_achived);
+//        Date today = new Date();
+//        Date tomorrow = new Date(today.getTime() + (1000*60*60*24));
         if(currentGoal.isAchived()){
             checkBox.setChecked(true);
             progress.setProgress(currentGoal.getAchivedValue());

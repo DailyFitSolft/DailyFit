@@ -117,7 +117,10 @@ public class StopwatchFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 tempExercise = (Exercise) parentView.getItemAtPosition(position);
-
+                chronometer.stop();
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                stopOffset = 0;
+                isRunning = false;
             }
 
             @Override
