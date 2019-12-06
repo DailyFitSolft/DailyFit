@@ -191,7 +191,6 @@ public class GoalFragment extends Fragment {
             }
         });
 
-
         alertDialog.setPositiveButton("Dodaj cel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

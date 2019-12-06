@@ -40,7 +40,7 @@
         android:id="@+id/spinnerinstopwatch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-400dp"
+        android:layout_marginTop="-350dp"
         android:dropDownWidth="wrap_content"
         android:minHeight="50dp"
         android:maxHeight="50dp"/>
