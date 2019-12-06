@@ -147,7 +147,7 @@ public class GoalFragment extends Fragment {
         final View alerDialogView = inflater.inflate(R.layout.popup_delete_goal, null);
         alertDialog.setView(alerDialogView);
         TextView text = alerDialogView.findViewById(R.id.delete_goal_text);
-        text.setText("Error appeared because of wrong date or wrong input value");
+        text.setText("Wszystkie pola muszą zostać wypełnione. Spróbuj jeszcze raz :)");
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -192,7 +192,7 @@ public class GoalFragment extends Fragment {
         });
 
 
-        alertDialog.setPositiveButton("Add goal", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Dodaj cel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if(!dateText.equals("") && !valueToAchive.getText().toString().equals("")){

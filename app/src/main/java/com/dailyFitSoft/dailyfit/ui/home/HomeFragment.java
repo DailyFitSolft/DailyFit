@@ -2,7 +2,6 @@ package com.dailyFitSoft.dailyfit.ui.home;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -118,13 +117,13 @@ public class HomeFragment extends Fragment {
         alertDialog.setView(alertDialogView);
 
         TextView dateOfExerciseText = alertDialogView.findViewById(R.id.date_of_exercise);
-        dateOfExerciseText.setText("Exercise on: " + textRepresentationOfDate);
+        dateOfExerciseText.setText("Data ćwiczenia: " + textRepresentationOfDate);
 
         final Spinner exerciseSelector = alertDialogView.findViewById(R.id.exercise_selector);
         List<Exercise> listOfExercisesFromDatabase = new LinkedList<>();
         if(dataBaseHelper.getExerciseList().isEmpty())
         {
-            Toast.makeText(getContext(), "NO VAIABLE EXERCIES IN DATABASE!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Brak zdefiniowanych aktywności w bazie danych! Zdefiniuj aktywność i spróbuj ponownie",Toast.LENGTH_SHORT).show();
             return;
         }
         for (Exercise e: dataBaseHelper.getExerciseList())
@@ -150,13 +149,13 @@ public class HomeFragment extends Fragment {
         final EditText numberOfRepeats = alertDialogView.findViewById(R.id.number_of_repeats);
         final EditText timeOfExercise = alertDialogView.findViewById(R.id.time_of_exercise);
         final TimePicker timePicker = alertDialogView.findViewById(R.id.time_picker);
-        alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Zaakceptuj plan", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 if(numberOfRepeats.getText().toString().isEmpty() || timeOfExercise.getText().toString().isEmpty())
                 {
                     AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-                    alertDialog.setTitle("Error");
-                    alertDialog.setMessage("One of input value is null! Please enter correct value next time :)");
+                   // alertDialog.setTitle("Błąd");
+                    alertDialog.setMessage("Wszystkie pola muszą zostać wypełnione. Spróbuj jeszcze raz :)");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -194,7 +193,6 @@ public class HomeFragment extends Fragment {
                 }
 
             }
-
         }
     }
 

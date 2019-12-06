@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:hint="Value to achive" />
+            android:hint="Minuty ruchu/kcal do spalenia" />
         <CalendarView
             android:id="@+id/goal_add_calendar"
             android:layout_width="match_parent"

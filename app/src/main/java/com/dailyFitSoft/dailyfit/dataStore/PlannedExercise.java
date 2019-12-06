@@ -45,6 +45,6 @@ public class PlannedExercise {
     @NonNull
     @Override
     public String toString() {
-        return " Czas: " + trainTime + " Powtorzenia: " + repeatCount + " Godzina: " + plannedTime ;
+        return " Czas: " + trainTime + " minut Powtórzenia: " + repeatCount + " Godzina: " + plannedTime ;
     }
 }
