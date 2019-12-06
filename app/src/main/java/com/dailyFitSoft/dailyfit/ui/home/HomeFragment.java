@@ -81,6 +81,7 @@ public class HomeFragment extends Fragment {
         textRepresentationOfDate=formatter.format(date);
 
         homeCalendar = root.findViewById(R.id.home_fragment_calendar);
+        homeCalendar.setMinDate(new Date().getTime());
         homeCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -88,30 +89,6 @@ public class HomeFragment extends Fragment {
                 textRepresentationOfDate = dayOfMonth + "-" + (month+1) + "-" + year;
                 Toast.makeText(getContext(), textRepresentationOfDate,Toast.LENGTH_SHORT).show();
                 refreshListOfExercises();
-
-                try {
-
-                    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = new Date(System.currentTimeMillis());
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    Date date_today = sdf.parse(formatter.format(date));
-                    Date date_clicked = sdf.parse(year + "-" + (month+1) + "-" + dayOfMonth);
-                    if(date_clicked.before(date_today))
-                    {
-                        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-                        fab.setClickable(false);
-                    }
-                    else
-                    {
-                        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-                        fab.setClickable(true);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
             }
         });
     }
@@ -190,6 +167,7 @@ public class HomeFragment extends Fragment {
                 else
                 {
                     dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
+
                     dialog.cancel();
                     refreshListOfExercises();
                 }
