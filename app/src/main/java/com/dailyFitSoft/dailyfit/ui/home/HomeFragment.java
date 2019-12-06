@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,10 @@ public class HomeFragment extends Fragment {
 
         settingCalendar(root);
         settingExerciseList(root);
+
+        if(!DateUtils.isToday(dataBaseHelper.getLastlyAddedWeight().getDate().getTime())){
+            showWeightPopup();
+        }
 
         return root;
     }
@@ -194,6 +199,48 @@ public class HomeFragment extends Fragment {
 
             }
         }
+    }
+
+    private void showWeightPopup(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View alertDialogView = inflater.inflate(R.layout.popup_add_weight, null);
+        alertDialog.setView(alertDialogView);
+
+        final EditText weightInput = alertDialogView.findViewById(R.id.weight_to_add);
+        alertDialog.setPositiveButton("Dodaj", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    if(weightInput.getText().toString().equals(""))
+                        showErrorWeightAddingDialog();
+                    float weight = Float.valueOf(weightInput.getText().toString());
+                    dataBaseHelper.addWeightData(DateFormatter.stringFromDate(new Date()), weight);
+                    dataBaseHelper.modifyProfileWeight(weight);
+                    Toast.makeText(getContext(), "Pomyślnie zaktualizowano wagę", Toast.LENGTH_LONG).show();
+                    dialogInterface.dismiss();
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void showErrorWeightAddingDialog(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View alerDialogView = inflater.inflate(R.layout.popup_delete_goal, null);
+        alertDialog.setView(alerDialogView);
+        TextView text = alerDialogView.findViewById(R.id.delete_goal_text);
+        text.setText("Nieodpowiednio wypełnione pole");
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
     }
 
 }
