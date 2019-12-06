@@ -25,6 +25,7 @@ import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ExerciseFragment extends Fragment {
@@ -32,6 +33,7 @@ public class ExerciseFragment extends Fragment {
     private ExerciseViewModel exerciseViewModel;
     private DataBaseHelper dataBaseHelper;
     private Exercise tempExercise;
+    private ArrayAdapter<String> listViewAdapter;
 
 
 
@@ -54,20 +56,26 @@ public class ExerciseFragment extends Fragment {
         }
 
         for (Exercise exercise: exercises) {
+<<<<<<< HEAD
             exercisesToShow.add(exercise.getName() +
                     " \n Trudność: " + exercise.getDifficulty() + " | Spalone kalorie/godzinę ruchu: " +
+=======
+            exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalane kalorie na godzine: " +
+>>>>>>> deployment
                     exercise.getBurnedCalories());
         }
 
         ListView listView =  root.findViewById(R.id.ExerciseListView);
 
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
+        listViewAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 exercisesToShow
         );
 
         listView.setAdapter(listViewAdapter);
+
+
 
 
         listView.setLongClickable(true);
@@ -120,10 +128,30 @@ public class ExerciseFragment extends Fragment {
         final EditText difficulty = alertDialogView.findViewById(R.id.difficulty);
 
 
+<<<<<<< HEAD
         alertDialog.setPositiveButton("Dodaj aktywność", new DialogInterface.OnClickListener() {
+=======
+
+
+        alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
+
+>>>>>>> deployment
             public void onClick(DialogInterface dialog, int which) {
                 try {
-                    dataBaseHelper.addExerciseData(nameOfExercise.getText().toString(), Integer.parseInt(difficulty.getText().toString()), Integer.parseInt(burntCalories.getText().toString()));
+                    if (nameOfExercise.getText().toString().equals("")){
+                        Toast.makeText(getContext(),"Wszystkie pola musza byc wypelnione",Toast.LENGTH_LONG).show();
+
+                    }else if (Integer.parseInt(difficulty.getText().toString())< 1 || Integer.parseInt(difficulty.getText().toString()) > 10){
+                        Toast.makeText(getContext(),"Trudnosc musi byc z przedzialu od 1 do 10",Toast.LENGTH_LONG).show();
+                    }
+                    else if (Integer.parseInt(burntCalories.getText().toString())< 0 || Integer.parseInt(difficulty.getText().toString()) > 1000) {
+                        Toast.makeText(getContext(), "Saplone kalorie, musza byc z przedzialu od 0 do 1000", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        dataBaseHelper.addExerciseData(nameOfExercise.getText().toString(), Integer.parseInt(difficulty.getText().toString()), Integer.parseInt(burntCalories.getText().toString()));
+                        updateList(dataBaseHelper.getExerciseList());
+                    }
+
                 }
                 catch(NumberFormatException nfe){
                     Toast.makeText(getContext(),"Wszystkie pola muszą zostać wypełnione. Spróbuj jeszcze raz :)",Toast.LENGTH_LONG).show();
@@ -145,6 +173,7 @@ public class ExerciseFragment extends Fragment {
         alertDialog.setPositiveButton("Delete exercise", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 deleteExercise(position);
+                updateList(dataBaseHelper.getExerciseList());
                 dialog.cancel();
             }
         });
@@ -166,6 +195,17 @@ public class ExerciseFragment extends Fragment {
         dataBaseHelper.dropExercise(exercise.getID());
 
 
+    }
+
+    public void updateList(List<Exercise> exercises){
+        listViewAdapter.clear();
+        ArrayList<String> exercisesToShow = new ArrayList<String>();
+        for (Exercise exercise: exercises) {
+            exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalane kalorie na godzine: " +
+                    exercise.getBurnedCalories());
+        }
+        listViewAdapter.addAll(exercisesToShow);
+        listViewAdapter.notifyDataSetChanged();
     }
 
 
