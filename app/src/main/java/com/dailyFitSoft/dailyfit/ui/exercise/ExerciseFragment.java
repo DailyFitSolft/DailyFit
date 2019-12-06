@@ -50,11 +50,12 @@ public class ExerciseFragment extends Fragment {
         try {
             exercises = (ArrayList<Exercise>) dataBaseHelper.getExerciseList();
         }catch (NullPointerException ex){
-            System.out.println("Pusta baza");
+            System.out.println("Brak zdefiniowanych aktywności w systemie");
         }
 
         for (Exercise exercise: exercises) {
-            exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalone kalorie: " +
+            exercisesToShow.add(exercise.getName() +
+                    " \n Trudność: " + exercise.getDifficulty() + " | Spalone kalorie/godzinę ruchu: " +
                     exercise.getBurnedCalories());
         }
 
@@ -119,13 +120,13 @@ public class ExerciseFragment extends Fragment {
         final EditText difficulty = alertDialogView.findViewById(R.id.difficulty);
 
 
-        alertDialog.setPositiveButton("Add exercise", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Dodaj aktywność", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     dataBaseHelper.addExerciseData(nameOfExercise.getText().toString(), Integer.parseInt(difficulty.getText().toString()), Integer.parseInt(burntCalories.getText().toString()));
                 }
                 catch(NumberFormatException nfe){
-                    Toast.makeText(getContext(),"Wszystkie pola musza byc wypelnione",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"Wszystkie pola muszą zostać wypełnione. Spróbuj jeszcze raz :)",Toast.LENGTH_LONG).show();
                 }
                 dialog.cancel();
             }

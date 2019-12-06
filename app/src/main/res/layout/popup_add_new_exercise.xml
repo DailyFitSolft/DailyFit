@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Nazwa cwiczenia"
+            android:hint="Nazwa ćwiczenia"
             android:inputType="textPersonName" />
 
         <EditText
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Trudnosc cwiczenia"
+            android:hint="Trudność ćwiczenia"
             android:inputType="number" />
 
         <EditText
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Spalone kalorie"
+            android:hint="Spalone kalorie/godzinę ruchu"
             android:inputType="number" />
 
     </LinearLayout>

@@ -13,17 +13,17 @@
     <fragment
         android:id="@id/nav_excercise"
         android:name="com.dailyFitSoft.dailyfit.ui.exercise.ExerciseFragment"
-        android:label="Excercises"
+        android:label="Zdefiniowane aktywności"
         tools:layout="@layout/fragment_excercise" />
     <fragment
         android:id="@id/nav_goal"
         android:name="com.dailyFitSoft.dailyfit.ui.goals.GoalFragment"
-        android:label="Goals"
+        android:label="Cele treningowe"
         tools:layout="@layout/fragment_goal" />
     <fragment
         android:id="@id/nav_stopwatch"
         android:name="com.dailyFitSoft.dailyfit.ui.stopwatch.StopwatchFragment"
-        android:label="Stopwatch"
+        android:label="Rozpoczęcie treningu"
         tools:layout="@layout/fragment_stopwatch" />
     <fragment
         android:id="@id/nav_gallery"
