@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
         settingCalendar(root);
         settingExerciseList(root);
 
-        if(!DateUtils.isToday(dataBaseHelper.getLastlyAddedWeight().getDate().getTime())){
+        if( dataBaseHelper.getLastlyAddedWeight() == null || !DateUtils.isToday(dataBaseHelper.getLastlyAddedWeight().getDate().getTime())){
             showWeightPopup();
         }
 
