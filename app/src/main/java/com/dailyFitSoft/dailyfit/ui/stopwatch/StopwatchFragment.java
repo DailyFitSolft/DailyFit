@@ -1,5 +1,6 @@
 package com.dailyFitSoft.dailyfit.ui.stopwatch;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -20,9 +21,15 @@ import com.dailyFitSoft.dailyfit.R;
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.dailyFitSoft.dailyfit.dataStore.Goal;
+import com.dailyFitSoft.dailyfit.dataStore.PlannedExercise;
+import com.dailyFitSoft.dailyfit.dataStore.Training;
+import com.dailyFitSoft.dailyfit.ui.home.HomeFragment;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class StopwatchFragment extends Fragment {
@@ -34,8 +41,16 @@ public class StopwatchFragment extends Fragment {
     private DataBaseHelper dataBaseHelper;
     private Exercise tempExercise;
 
+    //variables for training
+    String nameOfExercise;
+    String startTime;
+    String endTime;
+    String date;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+
         stopwatchViewModel =
                 ViewModelProviders.of(this).get(StopwatchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_stopwatch, container, false);
@@ -54,6 +69,8 @@ public class StopwatchFragment extends Fragment {
                     chronometer.start();
                     isRunning = true;
                     resetButton.setClickable(false);
+                    startTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
                 }
             }
         });
@@ -65,6 +82,8 @@ public class StopwatchFragment extends Fragment {
                     stopOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
                     isRunning = false;
                     resetButton.setClickable(true);
+                    endTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                    date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                     for(Goal goal:listofgoals){
                         switch (goal.getGoalType()){
                             case CZAS_W_RUCHU:
@@ -93,7 +112,20 @@ public class StopwatchFragment extends Fragment {
                                 break;
                         }
                     }
+                    dataBaseHelper.addTrainingData(nameOfExercise,startTime,endTime,date);
 
+                    for (PlannedExercise p:dataBaseHelper.getPlannedExercisesList()) {
+                        if(p.getPlannedDate().equals(date) && p.getExerciseID()==tempExercise.getID())
+                        {
+                            int elapsedSeconds = (int)(SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
+                            int elapsedMinuts = elapsedSeconds;
+                            if(elapsedMinuts > p.getTrainTime())
+                            {
+                                dataBaseHelper.dropPlannedExercise(p.getID());
+                                Log.d("test","Usunieto zaplanowane cwiczenie: " + p.toString());
+                            }
+                        }
+                    }
                 }
             }
         });
@@ -117,6 +149,7 @@ public class StopwatchFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 tempExercise = (Exercise) parentView.getItemAtPosition(position);
+                nameOfExercise = tempExercise.getName();
                 chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 stopOffset = 0;

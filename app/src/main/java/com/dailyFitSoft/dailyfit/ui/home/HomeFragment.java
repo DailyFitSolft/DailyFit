@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
         if( dataBaseHelper.getLastlyAddedWeight() == null || !DateUtils.isToday(dataBaseHelper.getLastlyAddedWeight().getDate().getTime())){
             showWeightPopup();
         }
+        refreshListOfExercises();
 
         return root;
     }
@@ -187,7 +188,7 @@ public class HomeFragment extends Fragment {
         exercisesOnDay.clear();
         exerciseListDataAdapter.notifyDataSetChanged();
         for (PlannedExercise pe:dataBaseHelper.getPlannedExercisesList()) {
-            if(pe.getPlannedDate().equals(DateFormatter.dateFromString(textRepresentationOfDate)))
+            if(pe.getPlannedDate().equals(textRepresentationOfDate))
             {
                 for (Exercise e:dataBaseHelper.getExerciseList()) {
                     if(e.getID()==pe.getExerciseID())

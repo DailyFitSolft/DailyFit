@@ -207,7 +207,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(PLANNED_EXERCISE_COL4, repeatCount);
         contentValues.put(PLANNED_EXERCISE_COL5, date);
         contentValues.put(PLANNED_EXERCISE_COL6, time);
-        Log.d(PLANNED_EXERCISE_TABLE_NAME, "adding plannedExercise: " + exerciseID);
+        Log.d(PLANNED_EXERCISE_TABLE_NAME, "adding plannedExercise: " + exerciseID + "train time: " + trainTime + "repeatCount:" + repeatCount + "Date: " + date + "Time: " + time);
         long results = db.insert(PLANNED_EXERCISE_TABLE_NAME, null, contentValues);
         return (results != -1);
     }
@@ -246,7 +246,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //                        data.getInt(3),
 //                        DateFormatter.dateFromString(data.getString(4))),
 //                        data.getString(5));
-                plannedExercises.add(new PlannedExercise(data.getInt(0),data.getInt(1),data.getInt(2),data.getInt(3),DateFormatter.dateFromString(data.getString(4)),data.getString(5)));
+                plannedExercises.add(new PlannedExercise(data.getInt(0),data.getInt(1),data.getInt(2),data.getInt(3),data.getString(4),data.getString(5)));
             }
             catch(Exception e) {
                 e.printStackTrace();
