@@ -87,5 +87,18 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    public void showFloatingActionButton() {
+        FloatingActionButton button = findViewById(R.id.fab);
+        button.show();
+    }
 
+    public void hideFloatingActionButton() {
+        FloatingActionButton button = findViewById(R.id.fab);
+        button.hide();
+    }
+
+    public boolean isFloatingButtonShown() {
+        FloatingActionButton button = findViewById(R.id.fab);
+        return button.isShown();
+    }
 }

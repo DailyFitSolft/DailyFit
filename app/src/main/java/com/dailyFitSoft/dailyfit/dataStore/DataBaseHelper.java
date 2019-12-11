@@ -83,8 +83,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(createTableTraining);
         sqLiteDatabase.execSQL(createProfileTable);
 
-        sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
-            ") VALUES ('Aerobik (intensywnie)', 6, 511)");
+
+        long id = addExerciseDataAndReturnId(sqLiteDatabase, "Aerobik (intensywnie)", 6, 511);
+
         sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
                 ") VALUES ('Aerobik (spokojnie)', 3, 360)");
         sqLiteDatabase.execSQL(" INSERT INTO " + EXERCISE_TABLE_NAME +"( " + EXERCISE_COL2 + " , " + EXERCISE_COL3 + "," + EXERCISE_COL4 +
@@ -136,7 +137,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
         sqLiteDatabase.execSQL(" INSERT INTO " + TRAINING_TABLE_NAME +"( " + TRAINING_COL2 + " , " + TRAINING_COL3 + "," + TRAINING_COL4  +
-                ") VALUES (1, '30-11-2019 11:33:33', '30-11-2019 15:15:01')");
+                ") VALUES (" + id + ", '30-11-2019 11:33:33', '30-11-2019 15:15:01')");
 
 
 //        sqLiteDatabase.execSQL(" INSERT INTO " + GOAL_TABLE_NAME + "(" + GOAL_COL2 + "," + GOAL_COL3 + "," +
@@ -165,14 +166,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     //=========EXERCISE===========================================================
 
     public boolean addExerciseData(String exerciseName, int difficulty, int burnedCalories) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        return (addExerciseDataAndReturnId(this.getWritableDatabase(), exerciseName, difficulty, burnedCalories) != -1);
+    }
+
+    private long addExerciseDataAndReturnId(SQLiteDatabase db, String exerciseName, int difficulty, int burnedCalories) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(EXERCISE_COL2, exerciseName);
         contentValues.put(EXERCISE_COL3, difficulty);
         contentValues.put(EXERCISE_COL4, burnedCalories);
         Log.d(EXERCISE_TABLE_NAME, "adding data: " + exerciseName);
-        long results = db.insert(EXERCISE_TABLE_NAME, null, contentValues);
-        return (results != -1);
+        long rowId = db.insert(EXERCISE_TABLE_NAME, null, contentValues);
+
+        return rowId;
     }
 
     private Cursor getExerciseData() {

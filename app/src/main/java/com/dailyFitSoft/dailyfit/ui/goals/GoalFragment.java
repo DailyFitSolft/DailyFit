@@ -61,7 +61,7 @@ public class GoalFragment extends Fragment {
         try{
             goals =  dataBaseHelper.getGoalList();
         } catch (NullPointerException ex){
-            System.out.println("Database is empty!");
+            System.out.println("Brak celów treningowych w bazie danych");
         }
 
         listView = root.findViewById(R.id.goalListView);
@@ -131,7 +131,7 @@ public class GoalFragment extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View alerDialogView = inflater.inflate(R.layout.popup_delete_goal, null);
         alertDialog.setView(alerDialogView);
-        alertDialog.setPositiveButton("Delete exercise", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Usuń ćwiczenie", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dataBaseHelper.dropGoal(goalID);
                 goalAdapter.updateList(dataBaseHelper.getGoalList());
