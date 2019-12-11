@@ -223,7 +223,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put(PLANNED_EXERCISE_COL4, repeatCount);
         contentValues.put(PLANNED_EXERCISE_COL5, date);
         contentValues.put(PLANNED_EXERCISE_COL6, time);
-        Log.d(PLANNED_EXERCISE_TABLE_NAME, "adding plannedExercise: " + exerciseID);
+        Log.d(PLANNED_EXERCISE_TABLE_NAME, "adding plannedExercise: " + exerciseID + "train time: " + trainTime + "repeatCount:" + repeatCount + "Date: " + date + "Time: " + time);
         long results = db.insert(PLANNED_EXERCISE_TABLE_NAME, null, contentValues);
         return (results != -1);
     }

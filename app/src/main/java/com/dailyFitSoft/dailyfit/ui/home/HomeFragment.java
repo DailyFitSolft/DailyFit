@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
             showWeightPopup();
             Weight.alreadyAsked = true;
         }
+        refreshListOfExercises();
 
         return root;
     }
@@ -93,7 +94,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                textRepresentationOfDate = dayOfMonth + "-" + (month+1) + "-" + year;
+                textRepresentationOfDate = year + "-" + (month+1) + "-" + dayOfMonth;
                 Toast.makeText(getContext(), textRepresentationOfDate,Toast.LENGTH_SHORT).show();
                 refreshListOfExercises();
             }
@@ -174,7 +175,6 @@ public class HomeFragment extends Fragment {
                 else
                 {
                     dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
-
                     dialog.cancel();
                     refreshListOfExercises();
                 }
@@ -189,7 +189,11 @@ public class HomeFragment extends Fragment {
         exercisesOnDay.clear();
         exerciseListDataAdapter.notifyDataSetChanged();
         for (PlannedExercise pe:dataBaseHelper.getPlannedExercisesList()) {
-            if(pe.getPlannedDate().equals(DateFormatter.dateFromString(textRepresentationOfDate)))
+
+            Date plannedDate = pe.getPlannedDate();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDatePlannedDate = df.format(plannedDate);
+            if(formattedDatePlannedDate.equals(textRepresentationOfDate))
             {
                 for (Exercise e:dataBaseHelper.getExerciseList()) {
                     if(e.getID()==pe.getExerciseID())
