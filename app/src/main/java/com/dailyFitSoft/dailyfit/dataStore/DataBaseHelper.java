@@ -437,12 +437,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //==========TRAININGS=================================================================
 
-    public boolean addTrainingData(int excerciseId, String startDateTime, String stopDateTime) {
+    public boolean addTrainingData(int excerciseId, Date startDateTime, Date stopDateTime) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TRAINING_COL2, excerciseId);
-        contentValues.put(TRAINING_COL3, startDateTime);
-        contentValues.put(TRAINING_COL4, stopDateTime);
+        contentValues.put(TRAINING_COL3, this.simpleDateFormat.format(startDateTime));
+        contentValues.put(TRAINING_COL4, this.simpleDateFormat.format(stopDateTime));
 
 
         Log.d(TRAINING_TABLE_NAME, "adding training exercise nr: " + excerciseId + ", start: " + startDateTime + " stop: " + stopDateTime);

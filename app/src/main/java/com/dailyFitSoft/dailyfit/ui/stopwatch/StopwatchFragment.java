@@ -68,8 +68,6 @@ public class StopwatchFragment extends Fragment {
                     isRunning = true;
                     resetButton.setClickable(false);
                     startTimeDate = Calendar.getInstance().getTime();
-
-
                 }
             }
         });
@@ -110,7 +108,7 @@ public class StopwatchFragment extends Fragment {
                                 break;
                         }
                     }
-                    dataBaseHelper.addTrainingData(tempExercise.getID(),startTimeDate.toString(),endTimeDate.toString());
+                    dataBaseHelper.addTrainingData(tempExercise.getID(),startTimeDate, endTimeDate);
 
                     for (PlannedExercise p:dataBaseHelper.getPlannedExercisesList()) {
                         Date plannedDate = p.getPlannedDate();

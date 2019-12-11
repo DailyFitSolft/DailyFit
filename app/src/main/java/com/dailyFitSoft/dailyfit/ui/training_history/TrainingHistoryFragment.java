@@ -100,7 +100,7 @@ public class TrainingHistoryFragment extends Fragment {
                 Cursor cursor =  dataBaseHelper.getExerciseData(training.getIDExercise());
                 cursor.moveToFirst();
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
                 int burnedCaloriesColumnId = cursor.getColumnIndex("BurnedCalories");
                 long burnedCalories = cursor.getLong(burnedCaloriesColumnId);
