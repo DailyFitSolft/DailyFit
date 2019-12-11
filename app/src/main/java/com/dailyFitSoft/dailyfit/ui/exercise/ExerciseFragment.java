@@ -24,6 +24,7 @@ import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,6 @@ public class ExerciseFragment extends Fragment {
         }
 
         for (Exercise exercise: exercises) {
-
             exercisesToShow.add(exercise.getName() + " | Trudność: " + exercise.getDifficulty() + " | Spalone kcal/godzinę ruchu: " +
                     exercise.getBurnedCalories());
         }

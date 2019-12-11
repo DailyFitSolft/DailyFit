@@ -7,6 +7,7 @@ public class Weight {
     private int ID;
     private Date date;
     private float weight;
+    public static boolean alreadyAsked = false;
 
     public Weight(int ID, Date date, float weight) {
         this.ID = ID;

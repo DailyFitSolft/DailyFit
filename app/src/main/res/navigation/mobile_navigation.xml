@@ -26,10 +26,10 @@
         android:label="Rozpoczęcie treningu"
         tools:layout="@layout/fragment_stopwatch" />
     <fragment
-        android:id="@id/nav_gallery"
-        android:name="com.dailyFitSoft.dailyfit.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@id/nav_training_history"
+        android:name="com.dailyFitSoft.dailyfit.ui.training_history.TrainingHistoryFragment"
+        android:label="@string/menu_training_history"
+        tools:layout="@layout/fragment_training_history" />
 
     <fragment
         android:id="@id/nav_slideshow"

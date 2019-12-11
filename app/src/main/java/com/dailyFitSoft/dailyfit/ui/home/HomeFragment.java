@@ -29,6 +29,7 @@ import com.dailyFitSoft.dailyfit.R;
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.dailyFitSoft.dailyfit.dataStore.PlannedExercise;
+import com.dailyFitSoft.dailyfit.dataStore.Weight;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Date;
@@ -66,8 +67,9 @@ public class HomeFragment extends Fragment {
         settingCalendar(root);
         settingExerciseList(root);
 
-        if( dataBaseHelper.getLastlyAddedWeight() == null || !DateUtils.isToday(dataBaseHelper.getLastlyAddedWeight().getDate().getTime())){
+        if(!Weight.alreadyAsked && (dataBaseHelper.getLastlyAddedWeight() == null || !DateUtils.isToday(dataBaseHelper.getLastlyAddedWeight().getDate().getTime()))){
             showWeightPopup();
+            Weight.alreadyAsked = true;
         }
         refreshListOfExercises();
 
