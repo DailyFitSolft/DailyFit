@@ -161,7 +161,8 @@ public class ExerciseFragment extends Fragment {
         final View alertDialogView = inflater.inflate(R.layout.popup_delete_exercise, null);
         alertDialog.setView(alertDialogView);
 
-        alertDialog.setPositiveButton("Delete exercise", new DialogInterface.OnClickListener() {
+
+        alertDialog.setPositiveButton("Usuń ćwiczenie", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 deleteExercise(position);
                 updateList(dataBaseHelper.getExerciseList());

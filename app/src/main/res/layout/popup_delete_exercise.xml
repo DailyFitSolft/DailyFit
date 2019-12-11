@@ -23,6 +23,6 @@
             android:id="@+id/delete_exercise_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Czy na pewno chcesz usunąć to ćwiczenie?" />
+            android:text="Usunięcie ćwiczenia może spowodować usunięcie powiązanych treningów z historii. Czy chcesz kontynuować?" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
