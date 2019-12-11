@@ -21,9 +21,9 @@
             android:icon="@drawable/ic_play_circle_filled_black_24dp"
             android:title="Rozpoczęcie treningu" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_training_history"
+            android:icon="@drawable/ic_menu_training_history"
+            android:title="@string/menu_training_history" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"

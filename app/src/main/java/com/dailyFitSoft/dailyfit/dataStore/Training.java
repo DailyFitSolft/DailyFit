@@ -4,17 +4,15 @@ import java.util.Date;
 
 public class Training {
     private int ID;
-    private String activityName;
-    private String startTime;
-    private String stopTime;
-    private Date startDate;
+    private int IDExercise;
+    private Date startDateTime;
+    private Date stopDateTime;
 
-    public Training(int id, String activityName, String startTime, String stopTime, Date startDate) {
+    public Training(int id, int IDExercise, Date startDateTime, Date stopDateTime) {
         this.ID = id;
-        this.activityName = activityName;
-        this.startTime = startTime;
-        this.stopTime = stopTime;
-        this.startDate = startDate;
+        this.IDExercise = IDExercise;
+        this.startDateTime = startDateTime;
+        this.stopDateTime = stopDateTime;
     }
 
 
@@ -22,20 +20,15 @@ public class Training {
         return ID;
     }
 
-    public String getActivityName() {
-        return activityName;
+    public Date getStartDateTime() {
+        return startDateTime;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public Date getStopDateTime() {
+        return stopDateTime;
     }
 
-    public String getStopTime() {
-        return stopTime;
+    public int getIDExercise() {
+        return IDExercise;
     }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
 }
