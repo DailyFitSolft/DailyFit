@@ -257,7 +257,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 //                        data.getInt(3),
 //                        DateFormatter.dateFromString(data.getString(4))),
 //                        data.getString(5));
-                plannedExercises.add(new PlannedExercise(data.getInt(0),data.getInt(1),data.getInt(2),data.getInt(3),data.getString(4),data.getString(5)));
+                plannedExercises.add(new PlannedExercise(data.getInt(0),data.getInt(1),data.getInt(2),data.getInt(3),DateFormatter.dateFromString(data.getString(4)),data.getString(5)));
             }
             catch(Exception e) {
                 e.printStackTrace();

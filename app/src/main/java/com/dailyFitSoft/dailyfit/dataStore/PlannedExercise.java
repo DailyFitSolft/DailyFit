@@ -10,10 +10,10 @@ public class PlannedExercise {
     private int exerciseID;
     private int trainTime;
     private int repeatCount;
-    private String plannedDate;
+    private Date plannedDate;
     private String plannedTime;
 
-    public PlannedExercise(int ID, int exerciseID, int trainTime, int repeatCount, String plannedDate, String plannedTime) {
+    public PlannedExercise(int ID, int exerciseID, int trainTime, int repeatCount, Date plannedDate, String plannedTime) {
         this.ID = ID;
         this.exerciseID = exerciseID;
         this.trainTime = trainTime;
@@ -38,7 +38,7 @@ public class PlannedExercise {
         return repeatCount;
     }
 
-    public String getPlannedDate() {
+    public Date getPlannedDate() {
         return plannedDate;
     }
 

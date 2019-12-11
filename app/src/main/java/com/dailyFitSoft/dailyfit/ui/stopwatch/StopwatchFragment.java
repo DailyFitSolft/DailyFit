@@ -42,10 +42,8 @@ public class StopwatchFragment extends Fragment {
     private Exercise tempExercise;
 
     //variables for training
-    String nameOfExercise;
-    String startTime;
-    String endTime;
-    String date;
+    Date startTimeDate;
+    Date endTimeDate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,7 +67,8 @@ public class StopwatchFragment extends Fragment {
                     chronometer.start();
                     isRunning = true;
                     resetButton.setClickable(false);
-                    startTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                    startTimeDate = Calendar.getInstance().getTime();
+
 
                 }
             }
@@ -82,8 +81,7 @@ public class StopwatchFragment extends Fragment {
                     stopOffset = SystemClock.elapsedRealtime() - chronometer.getBase();
                     isRunning = false;
                     resetButton.setClickable(true);
-                    endTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                    date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                    endTimeDate = Calendar.getInstance().getTime();
                     for(Goal goal:listofgoals){
                         switch (goal.getGoalType()){
                             case CZAS_W_RUCHU:
@@ -112,14 +110,19 @@ public class StopwatchFragment extends Fragment {
                                 break;
                         }
                     }
-                    dataBaseHelper.addTrainingData(nameOfExercise,startTime,endTime,date);
+                    dataBaseHelper.addTrainingData(tempExercise.getID(),startTimeDate.toString(),endTimeDate.toString());
 
                     for (PlannedExercise p:dataBaseHelper.getPlannedExercisesList()) {
-                        if(p.getPlannedDate().equals(date) && p.getExerciseID()==tempExercise.getID())
+                        Date plannedDate = p.getPlannedDate();
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        String formattedDatePlannedDate = df.format(plannedDate);
+                        String formattedDateEndDate = df.format(endTimeDate);
+                        if(formattedDatePlannedDate.equals(formattedDateEndDate) && p.getExerciseID()==tempExercise.getID())
                         {
                             int elapsedSeconds = (int)(SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
-                            int elapsedMinuts = elapsedSeconds;
-                            if(elapsedMinuts > p.getTrainTime())
+                            //tutaj /60 jak chcemy minuty, wyrzucone dla testow
+                            int elapsedMinutes = elapsedSeconds;
+                            if(elapsedMinutes > p.getTrainTime())
                             {
                                 dataBaseHelper.dropPlannedExercise(p.getID());
                                 Log.d("test","Usunieto zaplanowane cwiczenie: " + p.toString());
@@ -149,7 +152,6 @@ public class StopwatchFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 tempExercise = (Exercise) parentView.getItemAtPosition(position);
-                nameOfExercise = tempExercise.getName();
                 chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 stopOffset = 0;
