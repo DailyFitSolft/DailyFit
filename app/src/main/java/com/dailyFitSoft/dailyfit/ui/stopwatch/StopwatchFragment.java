@@ -112,7 +112,7 @@ public class StopwatchFragment extends Fragment {
 
                     for (PlannedExercise p:dataBaseHelper.getPlannedExercisesList()) {
                         Date plannedDate = p.getPlannedDate();
-                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         String formattedDatePlannedDate = df.format(plannedDate);
                         String formattedDateEndDate = df.format(endTimeDate);
                         if(formattedDatePlannedDate.equals(formattedDateEndDate) && p.getExerciseID()==tempExercise.getID())
