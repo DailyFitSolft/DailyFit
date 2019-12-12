@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_star_border_black_24dp"
             android:title="Cele treningowe" />
         <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="Profil" />
+        <item
             android:id="@+id/nav_stopwatch"
             android:icon="@drawable/ic_play_circle_filled_black_24dp"
             android:title="Rozpoczęcie treningu" />

@@ -19,4 +19,8 @@
     <string name="goalenddate">TextView</string>
     <string name="notsucceded">TextView</string>
     <string name="maxvalueprogress">TextView</string>
+    <string name="wzrost_190cm">Wzrost 190cm</string>
+    <string name="waga_80kg">Waga: 80kg</string>
+    <string name="_10_10_1998">10-10-1998</string>
+    <string name="jacek">Jacek</string>
 </resources>
