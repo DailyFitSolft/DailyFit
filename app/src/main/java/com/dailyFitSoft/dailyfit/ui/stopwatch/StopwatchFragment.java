@@ -56,9 +56,10 @@ public class StopwatchFragment extends Fragment {
         dataBaseHelper = new DataBaseHelper(getContext());
         List<Exercise> listOfExercisesFromDatabase = dataBaseHelper.getExerciseList();
         final List<Goal> listofgoals = dataBaseHelper.getGoalList();
-        Button startButton = (Button) root.findViewById(R.id.startbutton);
+        final Button startButton = (Button) root.findViewById(R.id.startbutton);
         Button pauseButton = root.findViewById(R.id.pausebutton);
         final Button resetButton = root.findViewById(R.id.resetbutton);
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,19 +97,21 @@ public class StopwatchFragment extends Fragment {
                                 break;
                             case SPALONE_KALORIE:
                                 //podzielic new archived value przez 60 zeby miec w minutach
-                                elapsedSeconds = (int)(SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
-                                newArchivedValue = (goal.getAchivedValue() + (elapsedSeconds/3600) * tempExercise.getBurnedCalories());
-                                goal.setAchivedValue(newArchivedValue);
-                                dataBaseHelper.updateGoalArchivedValue(goal,newArchivedValue);
-                                if(goal.getAchivedValue()>=goal.getValueToAchive())
-                                {
-                                    goal.setAchived(true);
-                                    dataBaseHelper.setGoalArchived(goal,true);
+                                if(tempExercise != null) {
+                                    elapsedSeconds = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
+                                    newArchivedValue = (goal.getAchivedValue() + (elapsedSeconds / 3600) * tempExercise.getBurnedCalories());
+                                    goal.setAchivedValue(newArchivedValue);
+                                    dataBaseHelper.updateGoalArchivedValue(goal, newArchivedValue);
+                                    if (goal.getAchivedValue() >= goal.getValueToAchive()) {
+                                        goal.setAchived(true);
+                                        dataBaseHelper.setGoalArchived(goal, true);
+                                    }
                                 }
                                 break;
                         }
                     }
-                    dataBaseHelper.addTrainingData(tempExercise.getID(),startTimeDate, endTimeDate);
+                    if(tempExercise != null)
+                         dataBaseHelper.addTrainingData(tempExercise.getID(),startTimeDate, endTimeDate);
 
                     for (PlannedExercise p:dataBaseHelper.getPlannedExercisesList()) {
                         Date plannedDate = p.getPlannedDate();
@@ -117,13 +120,16 @@ public class StopwatchFragment extends Fragment {
                         String formattedDateEndDate = df.format(endTimeDate);
                         if(formattedDatePlannedDate.equals(formattedDateEndDate) && p.getExerciseID()==tempExercise.getID())
                         {
-                            int elapsedSeconds = (int)(SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
-                            //tutaj /60 jak chcemy minuty, wyrzucone dla testow
-                            int elapsedMinutes = elapsedSeconds;
-                            if(elapsedMinutes > p.getTrainTime())
-                            {
-                                dataBaseHelper.dropPlannedExercise(p.getID());
-                                Log.d("test","Usunieto zaplanowane cwiczenie: " + p.toString());
+                            if(tempExercise == null){
+                                continue;
+                            }else {
+                                int elapsedSeconds = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
+                                //tutaj /60 jak chcemy minuty, wyrzucone dla testow
+                                int elapsedMinutes = elapsedSeconds;
+                                if (elapsedMinutes > p.getTrainTime()) {
+                                    dataBaseHelper.dropPlannedExercise(p.getID());
+                                    Log.d("test", "Usunieto zaplanowane cwiczenie: " + p.toString());
+                                }
                             }
                         }
                     }
@@ -143,12 +149,13 @@ public class StopwatchFragment extends Fragment {
         final Spinner exerciseSelector = root.findViewById(R.id.spinnerinstopwatch);
 
 
-        ArrayAdapter<Exercise> dataForSpinnerAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,listOfExercisesFromDatabase);
+        final ArrayAdapter<Exercise> dataForSpinnerAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_dropdown_item,listOfExercisesFromDatabase);
         exerciseSelector.setAdapter(dataForSpinnerAdapter);
 
         exerciseSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                startButton.setVisibility(View.VISIBLE);
                 tempExercise = (Exercise) parentView.getItemAtPosition(position);
                 chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
