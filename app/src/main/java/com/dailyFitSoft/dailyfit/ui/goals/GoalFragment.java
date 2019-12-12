@@ -147,7 +147,7 @@ public class GoalFragment extends Fragment {
         final View alerDialogView = inflater.inflate(R.layout.popup_delete_goal, null);
         alertDialog.setView(alerDialogView);
         TextView text = alerDialogView.findViewById(R.id.delete_goal_text);
-        text.setText("Wszystkie pola muszą zostać wypełnione. Spróbuj jeszcze raz :)");
+        text.setText("Wszystkie pola muszą zostać wypełnione poprawną wartością. Spróbuj jeszcze raz :)");
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -194,13 +194,21 @@ public class GoalFragment extends Fragment {
         alertDialog.setPositiveButton("Dodaj cel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(!dateText.equals("") && !valueToAchive.getText().toString().equals("")){
-                    dataBaseHelper.addGoalData(tempGoalType, dateText, false, Integer.parseInt(valueToAchive.getText().toString()), 0);
-                    goalAdapter.updateList(dataBaseHelper.getGoalList());
-                    dialogInterface.cancel();
+                int value;
+                try {
+                    value = Integer.parseInt(valueToAchive.getText().toString());
+                    if(!dateText.equals("") && !valueToAchive.getText().toString().equals("") && value < 100000000){
+                        dataBaseHelper.addGoalData(tempGoalType, dateText, false, value, 0);
+                        goalAdapter.updateList(dataBaseHelper.getGoalList());
+                        dialogInterface.cancel();
+                    }
+                    else
+                        showErrorDialog();
                 }
-                else
+                catch(NumberFormatException e) {
                     showErrorDialog();
+                }
+
             }
         });
         alertDialog.show();
