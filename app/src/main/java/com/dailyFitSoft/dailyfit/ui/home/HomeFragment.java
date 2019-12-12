@@ -221,6 +221,10 @@ public class HomeFragment extends Fragment {
                     if(weightInput.getText().toString().equals(""))
                         showErrorWeightAddingDialog();
                     float weight = Float.valueOf(weightInput.getText().toString());
+                    if(weight > 400){
+                        showErrorWeightAddingDialog();
+                        return;
+                    }
                     dataBaseHelper.addWeightData(DateFormatter.stringFromDate(new Date()), weight);
                     dataBaseHelper.modifyProfileWeight(weight);
                     Toast.makeText(getContext(), "Pomyślnie zaktualizowano wagę", Toast.LENGTH_LONG).show();
