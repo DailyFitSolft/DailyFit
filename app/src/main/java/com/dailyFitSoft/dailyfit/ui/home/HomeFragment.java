@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                textRepresentationOfDate = year + "-" + (month+1) + "-" + dayOfMonth;
+                textRepresentationOfDate = dayOfMonth + "-" + (month+1) + "-" + year;
                 Toast.makeText(getContext(), textRepresentationOfDate,Toast.LENGTH_SHORT).show();
                 refreshListOfExercises();
             }
@@ -191,7 +191,7 @@ public class HomeFragment extends Fragment {
         for (PlannedExercise pe:dataBaseHelper.getPlannedExercisesList()) {
 
             Date plannedDate = pe.getPlannedDate();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
             String formattedDatePlannedDate = df.format(plannedDate);
             if(formattedDatePlannedDate.equals(textRepresentationOfDate))
             {
