@@ -46,4 +46,8 @@ public class DateFormatter {
         Date now = new Date();
         return dateFromString(formatter.format(now));
     }
+
+    public static SimpleDateFormat getDateFormat(){
+        return formatter;
+    }
 }

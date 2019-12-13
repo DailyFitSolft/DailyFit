@@ -5,11 +5,13 @@ import android.content.DialogInterface;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -29,6 +31,7 @@ import com.dailyFitSoft.dailyfit.R;
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 import com.dailyFitSoft.dailyfit.dataStore.Exercise;
 import com.dailyFitSoft.dailyfit.dataStore.PlannedExercise;
+import com.dailyFitSoft.dailyfit.dataStore.Profile;
 import com.dailyFitSoft.dailyfit.dataStore.Weight;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -67,7 +70,13 @@ public class HomeFragment extends Fragment {
         settingCalendar(root);
         settingExerciseList(root);
 
-        if(!Weight.alreadyAsked && (dataBaseHelper.getLastlyAddedWeight() == null || !DateUtils.isToday(dataBaseHelper.getLastlyAddedWeight().getDate().getTime()))){
+        boolean profileShown = false;
+        if(dataBaseHelper.getProfileTableSize() == 0){
+            profileShown = true;
+            showPopupOfAddingProfile();
+        }
+
+        if(!profileShown && !Weight.alreadyAsked && (dataBaseHelper.getLastlyAddedWeight() == null || !DateUtils.isToday(dataBaseHelper.getLastlyAddedWeight().getDate().getTime()))){
             showWeightPopup();
             Weight.alreadyAsked = true;
         }
@@ -232,6 +241,38 @@ public class HomeFragment extends Fragment {
                 }
                 catch(Exception e) {
                     e.printStackTrace();
+                }
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void showPopupOfAddingProfile(){
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View alertDialogView = inflater.inflate(R.layout.popup_init_profile, null);
+        alertDialog.setView(alertDialogView);
+        final EditText nameInput = alertDialogView.findViewById(R.id.name_to_add);
+        final EditText heightInput = alertDialogView.findViewById(R.id.height_to_add);
+        final EditText weightInput = alertDialogView.findViewById(R.id.weight_to_add);
+        final EditText ageInput = alertDialogView.findViewById(R.id.age_to_add);
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("Potwierdź", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String name = nameInput.getText().toString();
+                String height = heightInput.getText().toString();
+                String weight = weightInput.getText().toString();
+                String age = ageInput.getText().toString();
+                if (!(name.equals("") || height.equals("") || weight.equals("") || age.equals(""))){
+                    boolean x = dataBaseHelper.addProfileData(name, Double.valueOf(height), Double.valueOf(weight), Integer.valueOf(age));
+                    Log.d("db", String.valueOf(x));
+                    dataBaseHelper.addWeightData(DateFormatter.stringFromDate(new Date()), Float.valueOf(weightInput.getText().toString()));
+                    dialogInterface.dismiss();
+                }
+                else{
+                    Toast.makeText(getContext(), "Pola nie zostały wypełnione poprawnie. Spróbuj jeszcze raz", Toast.LENGTH_LONG).show();
+                    showPopupOfAddingProfile();
                 }
             }
         });
