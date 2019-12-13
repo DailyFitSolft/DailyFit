@@ -1,29 +1,17 @@
 package com.dailyFitSoft.dailyfit.dataStore;
 
-import com.dailyFitSoft.dailyfit.DateFormatter;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class Profile {
 
     private String name;
     private double height;
     private double weight;
-    private Date birthday;
+    private int age;
 
-    public Profile(String name, double height, double weight, Date birthday) {
+    public Profile(String name, double height, double weight, int age) {
         this.name = name;
         this.height = height;
         this.weight = weight;
-        this.birthday = birthday;
-    }
-
-    public Profile(String name, double height, double weight, String birthday){
-        this.name = name;
-        this.height = height;
-        this.weight = weight;
-        this.birthday = DateFormatter.dateFromString(birthday);
+        this.age = age;
     }
 
     public String getName() {
@@ -38,7 +26,7 @@ public class Profile {
         return weight;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public int getAge() {
+        return age;
     }
 }

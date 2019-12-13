@@ -18,7 +18,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private static final String DATABASE_NAME = "DailyFit_DB";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 12;
 
 
     private static final String EXERCISE_TABLE_NAME = "exercises";
@@ -58,7 +58,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String PROFILE_COL1 = "Name";
     private static final String PROFILE_COL2 = "Height";
     private static final String PROFILE_COL3 = "Weight";
-    private static final String PROFILE_COL4 = "Birthday";
+    private static final String PROFILE_COL4 = "Age";
 
 
     public DataBaseHelper(Context context) {
@@ -74,7 +74,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String createTableGoal = "CREATE TABLE " + GOAL_TABLE_NAME + " ( " + GOAL_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + GOAL_COL2 + " INTEGER, " + GOAL_COL3 + " TEXT, " + GOAL_COL4 + " INTEGER, " + GOAL_COL5 + " INTEGER, " + GOAL_COL6 + " INTEGER);";
         String createTableWeight = "CREATE TABLE " + WEIGHT_TABLE_NAME + " ( " + WEIGHT_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + WEIGHT_COL2 + " TEXT, " + WEIGHT_COL3 + " INTEGER);";
         String createTableTraining = "CREATE TABLE " + TRAINING_TABLE_NAME + " ( " + TRAINING_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TRAINING_COL2 + " INTEGER, " + TRAINING_COL3 + " TEXT, " + TRAINING_COL4 + " TEXT);";
-        String createProfileTable = "CREATE TABLE " + PROFILE_TABLE_NAME + " ( " + TRAINING_COL1 + " TEXT PRIMARY KEY, " + PROFILE_COL2 + " REAL, " + PROFILE_COL3 + " REAL, " + PROFILE_COL4 + " TEXT);";
+        String createProfileTable = "CREATE TABLE " + PROFILE_TABLE_NAME + " ( " + PROFILE_COL1 + " TEXT PRIMARY KEY, " + PROFILE_COL2 + " INTEGER, " + PROFILE_COL3 + " INTEGER, " + PROFILE_COL4 + " INTEGER);";
 
         sqLiteDatabase.execSQL(createTableExercise);
         sqLiteDatabase.execSQL(createTablePlannedExercise);
@@ -503,19 +503,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //========PROFILE====================================================================
 
-    public boolean addProfileData(String name, double height, double weight, String birthday){
-        if(getProfileData().moveToNext())
-            return false;
+    public boolean addProfileData(String name, double height, double weight, int age){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PROFILE_COL1, name);
         contentValues.put(PROFILE_COL2, height);
         contentValues.put(PROFILE_COL3, weight);
-        contentValues.put(PROFILE_COL4, birthday);
+        contentValues.put(PROFILE_COL4, age);
 
         Log.d( PROFILE_TABLE_NAME ,"adding profile info: " + name);
         long result = db.insert(PROFILE_TABLE_NAME, null, contentValues);
         return (result != -1);
+    }
+
+    public int getProfileTableSize(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + PROFILE_TABLE_NAME;
+        Cursor data = db.rawQuery(query, null);
+        return data.getCount();
     }
 
     private Cursor getProfileData(){
@@ -539,7 +544,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private Profile getProfile(Cursor data){
         Profile profile = null;
         if(data.moveToNext()){
-            profile = new Profile(data.getString(0), data.getDouble(1), data.getDouble(2), data.getString(3));
+            profile = new Profile(data.getString(0), data.getDouble(1), data.getDouble(2), data.getInt(3));
         }
         return profile;
     }
@@ -548,9 +553,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return getProfile(getProfileData());
     }
 
-    public void modifyProfile(String name, double height, double weight, String birthday){
+    public void modifyProfile(String name, double height, double weight, int age){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE " + PROFILE_TABLE_NAME + " SET " + PROFILE_COL1 + " = " + name + " , " + PROFILE_COL2 + " = " + height + " , " + PROFILE_COL3 + " = " + weight + " , " + PROFILE_COL4 + " = " + birthday + " WHERE 1 = 1;");
+        db.execSQL("UPDATE " + PROFILE_TABLE_NAME + " SET " + PROFILE_COL1 + " = " + name + " , " + PROFILE_COL2 + " = " + height + " , " + PROFILE_COL3 + " = " + weight + " , " + PROFILE_COL4 + " = " + age + " WHERE 1 = 1;");
     }
 
     public void modifyProfileWeight(double weight){
