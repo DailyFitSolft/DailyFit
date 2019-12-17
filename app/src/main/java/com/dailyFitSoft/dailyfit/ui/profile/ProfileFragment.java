@@ -47,10 +47,10 @@ public class ProfileFragment extends Fragment {
         changeWeight = (Button) root.findViewById(R.id.change_weight_button);
         dataBaseHelper = new DataBaseHelper(getContext());
 
-//        textViewWeight.setText(Double.toString(dataBaseHelper.getProfile().getWeight()));
-//        textViewHight.setText(Double.toString(dataBaseHelper.getProfile().getHeight()));
-//        textViewHight.setText(dataBaseHelper.getProfile().getName());
-//        textViewHight.setText(dataBaseHelper.getProfile().getBirthday().toString());
+        textViewWeight.setText("Waga: " + Double.toString(dataBaseHelper.getProfile().getWeight()) + "kg");
+        textViewHight.setText("Wzrost: " + Double.toString(dataBaseHelper.getProfile().getHeight()) + "cm");
+        textViewName.setText(dataBaseHelper.getProfile().getName());
+        textViewBirthday.setText("Wiek: " + Integer.toString(dataBaseHelper.getProfile().getAge()));
         changeWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment {
                         try {
                             float weight = Float.valueOf(weightInput.getText().toString());
                             if(weight > 0 && weight < 350) {
-                                textViewWeight.setText("Waga " + weight + "kg");
+                                textViewWeight.setText("Waga: " + weight + "kg");
                                 dataBaseHelper.modifyProfileWeight(weight);
                             }
                             dialogInterface.dismiss();
@@ -102,7 +102,7 @@ public class ProfileFragment extends Fragment {
                         try {
                             int height = Integer.valueOf(hightInput.getText().toString());
                             if(height >0 && height<250) {
-                                textViewHight.setText("Wzrost " + height + "cm");
+                                textViewHight.setText("Wzrost: " + height + "cm");
                                 dataBaseHelper.modifyProfileHight(height);
                             }
                             dialogInterface.dismiss();
@@ -139,7 +139,7 @@ public class ProfileFragment extends Fragment {
                         try {
                             String name = nameInput.getText().toString();
                             textViewName.setText(name);
-                            dataBaseHelper.modifyProfileName(name);
+                            dataBaseHelper.modifyProfileName("'" + name + "'" );
                             dialogInterface.dismiss();
                         }
                         catch(Exception e) {
@@ -166,14 +166,14 @@ public class ProfileFragment extends Fragment {
                 alertDialog.setView(alertDialogView);
 
                 final EditText birthdayInput = alertDialogView.findViewById(R.id.editparameters);
-                birthdayInput.setHint("Data urodzenia");
-                birthdayInput.setInputType(InputType.TYPE_DATETIME_VARIATION_DATE);
+                birthdayInput.setHint("Wiek");
+                birthdayInput.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 alertDialog.setPositiveButton("Potwierdź", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         try {
                              String birthday = birthdayInput.getText().toString();
-                             textViewBirthday.setText("Data urodzenia " + birthday);
+                             textViewBirthday.setText("Wiek: " + birthday);
                              dataBaseHelper.modifyProfileBirthdate(birthday);
                             dialogInterface.dismiss();
                         }
