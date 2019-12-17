@@ -566,9 +566,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE " + PROFILE_TABLE_NAME + " SET " + PROFILE_COL2 + " = " + hight + " WHERE 1=1;");
     }
-    public void modifyProfileName(String name){
+    public void modifyProfileName(String newname){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("UPDATE " + PROFILE_TABLE_NAME + " SET " + PROFILE_COL1 + " = " + name + " WHERE 1=1;");
+        db.execSQL("UPDATE " + PROFILE_TABLE_NAME + " SET " + PROFILE_COL1 + " = " + newname + " WHERE 1=1;");
     }
     public void modifyProfileBirthdate(String birthday){
         SQLiteDatabase db = this.getWritableDatabase();
