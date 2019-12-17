@@ -1,6 +1,7 @@
 package com.dailyFitSoft.dailyfit.ui.profile;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.dailyFitSoft.dailyfit.MainActivity;
 import com.dailyFitSoft.dailyfit.R;
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 
@@ -30,7 +32,7 @@ public class ProfileFragment extends Fragment {
     private Button changeHeight;
     private Button changeWeight;
     private DataBaseHelper dataBaseHelper;
-
+    private boolean shouldShowFloatingButton;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -173,8 +175,10 @@ public class ProfileFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         try {
                              String birthday = birthdayInput.getText().toString();
-                             textViewBirthday.setText("Wiek: " + birthday);
-                             dataBaseHelper.modifyProfileBirthdate(birthday);
+                             if (Integer.valueOf(birthday) > 0 && Integer.valueOf(birthday) < 150){
+                                 textViewBirthday.setText("Wiek: " + birthday);
+                                 dataBaseHelper.modifyProfileBirthdate(birthday);
+                             }
                             dialogInterface.dismiss();
                         }
                         catch(Exception e) {
@@ -193,6 +197,36 @@ public class ProfileFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity)getActivity();
+
+            if (activity.isFloatingButtonShown()) {
+                activity.hideFloatingActionButton();
+                shouldShowFloatingButton = true;
+            } else {
+                shouldShowFloatingButton = false;
+            }
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity)getActivity();
+
+            if (shouldShowFloatingButton) {
+                activity.showFloatingActionButton();
+                shouldShowFloatingButton = false;
+            }
+        }
     }
 
 

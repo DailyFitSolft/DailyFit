@@ -265,10 +265,16 @@ public class HomeFragment extends Fragment {
                 String weight = weightInput.getText().toString();
                 String age = ageInput.getText().toString();
                 if (!(name.equals("") || height.equals("") || weight.equals("") || age.equals(""))){
-                    boolean x = dataBaseHelper.addProfileData(name, Double.valueOf(height), Double.valueOf(weight), Integer.valueOf(age));
-                    Log.d("db", String.valueOf(x));
-                    dataBaseHelper.addWeightData(DateFormatter.stringFromDate(new Date()), Float.valueOf(weightInput.getText().toString()));
-                    dialogInterface.dismiss();
+                    if(Integer.valueOf(height) >0 && Integer.valueOf(height)<250 && Double.valueOf(weight) > 0 && Double.valueOf(weight) < 350 && Integer.valueOf(age) > 0 && Integer.valueOf(age) < 150) {
+                        boolean x = dataBaseHelper.addProfileData(name, Double.valueOf(height), Double.valueOf(weight), Integer.valueOf(age));
+                        Log.d("db", String.valueOf(x));
+                        dataBaseHelper.addWeightData(DateFormatter.stringFromDate(new Date()), Float.valueOf(weightInput.getText().toString()));
+                        dialogInterface.dismiss();
+                    }
+                    else{
+                        Toast.makeText(getContext(), "Pola nie zostały wypełnione poprawnie. Spróbuj jeszcze raz", Toast.LENGTH_LONG).show();
+                        showPopupOfAddingProfile();
+                    }
                 }
                 else{
                     Toast.makeText(getContext(), "Pola nie zostały wypełnione poprawnie. Spróbuj jeszcze raz", Toast.LENGTH_LONG).show();

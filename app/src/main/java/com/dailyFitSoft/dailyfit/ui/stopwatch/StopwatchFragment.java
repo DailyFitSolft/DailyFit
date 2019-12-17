@@ -1,5 +1,6 @@
 package com.dailyFitSoft.dailyfit.ui.stopwatch;
 
+import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.dailyFitSoft.dailyfit.MainActivity;
 import com.dailyFitSoft.dailyfit.R;
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 import com.dailyFitSoft.dailyfit.dataStore.Exercise;
@@ -40,6 +42,7 @@ public class StopwatchFragment extends Fragment {
     private boolean isRunning;
     private DataBaseHelper dataBaseHelper;
     private Exercise tempExercise;
+    private boolean shouldShowFloatingButton;
 
     //variables for training
     Date startTimeDate;
@@ -180,7 +183,35 @@ public class StopwatchFragment extends Fragment {
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity)getActivity();
+
+            if (activity.isFloatingButtonShown()) {
+                activity.hideFloatingActionButton();
+                shouldShowFloatingButton = true;
+            } else {
+                shouldShowFloatingButton = false;
+            }
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity)getActivity();
+
+            if (shouldShowFloatingButton) {
+                activity.showFloatingActionButton();
+                shouldShowFloatingButton = false;
+            }
+        }
+    }
 
 
 }
