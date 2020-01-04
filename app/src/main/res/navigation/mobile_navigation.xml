@@ -37,6 +37,12 @@
         tools:layout="@layout/fragment_training_history" />
 
     <fragment
+        android:id="@id/nav_statistics"
+        android:name="com.dailyFitSoft.dailyfit.ui.statistics.StatisticsFragment"
+        android:label="@string/menu_statistics"
+        tools:layout="@layout/fragment_statistics" />
+
+    <fragment
         android:id="@id/nav_slideshow"
         android:name="com.dailyFitSoft.dailyfit.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"

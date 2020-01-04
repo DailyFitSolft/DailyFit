@@ -13,6 +13,7 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="menu_statistics">Statystyki</string>
 
     <string name="popup_title_add_event_to_calendar">Select exercise on : </string>
     <string name="nameofgoal">TextView</string>

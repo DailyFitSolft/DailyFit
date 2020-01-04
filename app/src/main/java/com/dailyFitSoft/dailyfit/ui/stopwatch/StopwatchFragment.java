@@ -102,7 +102,8 @@ public class StopwatchFragment extends Fragment {
                                 //podzielic new archived value przez 60 zeby miec w minutach
                                 if(tempExercise != null) {
                                     elapsedSeconds = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
-                                    newArchivedValue = (goal.getAchivedValue() + (elapsedSeconds / 3600) * tempExercise.getBurnedCalories());
+                                    //elapsed seconds powinno byc elapsed seconds/3600 zeby kalorie na godzine, teraz licza sie sekundy jak godziny
+                                    newArchivedValue = (goal.getAchivedValue() + (elapsedSeconds) * tempExercise.getBurnedCalories());
                                     goal.setAchivedValue(newArchivedValue);
                                     dataBaseHelper.updateGoalArchivedValue(goal, newArchivedValue);
                                     if (goal.getAchivedValue() >= goal.getValueToAchive()) {
