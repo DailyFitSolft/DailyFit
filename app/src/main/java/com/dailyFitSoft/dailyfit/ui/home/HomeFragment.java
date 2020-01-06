@@ -196,9 +196,10 @@ public class HomeFragment extends Fragment {
                 else
                 {
 
-                    String year = textRepresentationOfDate.substring(0,textRepresentationOfDate.indexOf('-'));
+                    String day = textRepresentationOfDate.substring(0,textRepresentationOfDate.indexOf('-'));
                     String month = textRepresentationOfDate.substring(textRepresentationOfDate.indexOf('-')+1,textRepresentationOfDate.lastIndexOf('-'));
-                    String day = textRepresentationOfDate.substring(textRepresentationOfDate.lastIndexOf('-')+1, textRepresentationOfDate.length());
+                    String year = textRepresentationOfDate.substring(textRepresentationOfDate.lastIndexOf('-')+1, textRepresentationOfDate.length());
+
 
 //                    Calendar calendar = new Calendar.Builder().setCalendarType("iso8601")
 //                            .setDate(Integer.parseInt(year), Integer.parseInt(month),Integer.parseInt(day))
@@ -218,6 +219,8 @@ public class HomeFragment extends Fragment {
                     NotificationChannel notificationChannel = null;
                     notificationChannel = new NotificationChannel("default", "primary",
                             NotificationManager.IMPORTANCE_HIGH);
+
+                    System.out.println(calendar.getTime());
 
                     NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
                     if(manager != null)
