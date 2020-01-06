@@ -2,7 +2,6 @@ package com.dailyFitSoft.dailyfit.ui.statistics;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,10 @@ import com.dailyFitSoft.dailyfit.dataStore.Profile;
 import com.dailyFitSoft.dailyfit.dataStore.Training;
 import com.dailyFitSoft.dailyfit.dataStore.Weight;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,19 +39,13 @@ public class StatisticsFragment extends Fragment {
         statisticsViewModel =
                 ViewModelProviders.of(this).get(StatisticsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_statistics, container, false);
-        final TextView textView = root.findViewById(R.id.text_statistics);
-        statisticsViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        createFirstPlot(root);
+        createCaloriesPlot(root);
+        createTimeInMovePlot(root);
         createWeightPlot(root);
         createBMIPlot(root);
         return root;
     }
-    public void createFirstPlot(View root)
+    public void createCaloriesPlot(View root)
     {
 
         ArrayList<Training> trainings = new ArrayList<>();
@@ -85,9 +76,7 @@ public class StatisticsFragment extends Fragment {
 
                 int burnedCaloriesColumnId = cursor.getColumnIndex("BurnedCalories");
                 long burnedCalories = cursor.getLong(burnedCaloriesColumnId);
-                //511
                 spaloneKalorie = burnedCalories/60 * minutesOfBurningCalories;
-                //1768
 
             }
             catch (Exception e)
@@ -95,24 +84,7 @@ public class StatisticsFragment extends Fragment {
                 e.printStackTrace();
             }
 
-
-
-
-            //sprawdzam czy jest juz jakis wpis z taka data
-//            for (DataPoint d:dataPoints) {
-//                double dateInMiliSeconds = d.getX();
-//                long dateInSeconds = new Double(dateInMiliSeconds).longValue() * 1000;
-//                Date tempDate = new Date(dateInSeconds);
-//
-//                //biore tylko poczatek z data
-//                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//                if(formatter.format(tempDate).equals(formatter.format(stopDateTime)))
-//                {
-//
-//                }
-//            }
             dataPoints.add(new DataPoint(stopDateTime,spaloneKalorie));
-
 
 
         }
@@ -124,7 +96,7 @@ public class StatisticsFragment extends Fragment {
         DataPoint[] dataPointsArray = new DataPoint[dataPoints.size()];
         dataPointsArray = dataPoints.toArray(dataPointsArray);
 
-        GraphView graph = root.findViewById(R.id.graph1);
+        GraphView graph = root.findViewById(R.id.caloriesGraph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsArray);
         graph.addSeries(series);
 
@@ -140,6 +112,32 @@ public class StatisticsFragment extends Fragment {
 // as we use dates as labels, the human rounding to nice readable numbers
 // is not necessary
         graph.getGridLabelRenderer().setHumanRounding(false);
+    }
+
+    public void createTimeInMovePlot(View root)
+    {
+        List<Training> trainingList = dataBaseHelper.getTrainingsList();
+        GraphView graphView = root.findViewById(R.id.weightGraph);
+
+        List<DataPoint> dataPointList = new ArrayList<>();
+        for (Training t : trainingList){
+            dataPointList.add(new DataPoint(t.getStopDateTime(), Math.abs(t.getStopDateTime().getTime() - t.getStartDateTime().getTime())/1000));
+        }
+        DataPoint[] dataPointsArray = new DataPoint[dataPointList.size()];
+        dataPointsArray = dataPointList.toArray(dataPointsArray);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsArray);
+        graphView.addSeries(series);
+        // set date label formatter
+        graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+
+// set manual x bounds to have nice steps
+        graphView.getViewport().setMinX(dataPointList.get(0).getX());
+        graphView.getViewport().setMaxX(dataPointList.get(dataPointList.size()-1).getX());
+        graphView.getViewport().setXAxisBoundsManual(true);
+
+// as we use dates as labels, the human rounding to nice readable numbers
+// is not necessary
+        graphView.getGridLabelRenderer().setHumanRounding(false);
     }
 
     public void createWeightPlot(View root){

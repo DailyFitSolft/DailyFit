@@ -10,18 +10,36 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
         <TextView
-            android:id="@+id/text_statistics"
+            android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="Wykres spalonych kalorii"
             android:textAlignment="center"
             android:textSize="20sp" />
 
         <com.jjoe64.graphview.GraphView
-            android:id="@+id/graph1"
+            android:id="@+id/caloriesGraph"
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
+
+            />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="Wykres czasu w ruchu"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/timeInMoveGraph"
             android:layout_width="match_parent"
             android:layout_height="200dip"
 

@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
     private void settingCalendar(View root)
     {
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date(System.currentTimeMillis());
         textRepresentationOfDate=formatter.format(date);
 
@@ -114,8 +114,29 @@ public class HomeFragment extends Fragment {
         homeCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                String dayString;
+                String monthString;
+                String yearsString;
+                if(dayOfMonth<10)
+                {
+                    dayString="0" + dayOfMonth;
+                }
+                else
+                {
+                    dayString="" + dayOfMonth;
+                }
 
-                textRepresentationOfDate = dayOfMonth + "-" + (month+1) + "-" + year;
+                if(month<10)
+                {
+                    monthString="0" + (month+1);
+                }
+                else
+                {
+                    monthString="" + (month+1);
+                }
+
+                yearsString ="" +  year;
+                textRepresentationOfDate = dayString + "-" + monthString + "-" + yearsString;
                 Toast.makeText(getContext(), textRepresentationOfDate,Toast.LENGTH_SHORT).show();
                 refreshListOfExercises();
             }
@@ -196,9 +217,9 @@ public class HomeFragment extends Fragment {
                 else
                 {
 
-                    String year = textRepresentationOfDate.substring(0,textRepresentationOfDate.indexOf('-'));
+                    String day = textRepresentationOfDate.substring(0,textRepresentationOfDate.indexOf('-'));
                     String month = textRepresentationOfDate.substring(textRepresentationOfDate.indexOf('-')+1,textRepresentationOfDate.lastIndexOf('-'));
-                    String day = textRepresentationOfDate.substring(textRepresentationOfDate.lastIndexOf('-')+1, textRepresentationOfDate.length());
+                    String year = textRepresentationOfDate.substring(textRepresentationOfDate.lastIndexOf('-')+1);
 
 //                    Calendar calendar = new Calendar.Builder().setCalendarType("iso8601")
 //                            .setDate(Integer.parseInt(year), Integer.parseInt(month),Integer.parseInt(day))
