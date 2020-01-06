@@ -103,8 +103,8 @@ public class StopwatchFragment extends Fragment {
                                 if(tempExercise != null) {
                                     elapsedSeconds = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
                                     //elapsed seconds powinno byc elapsed seconds/3600 zeby kalorie na godzine, teraz licza sie sekundy jak godziny
-                                    newArchivedValue = (goal.getAchivedValue() + (elapsedSeconds) * tempExercise.getBurnedCalories());
-                                    goal.setAchivedValue(newArchivedValue);
+                                    newArchivedValue = (goal.getAchivedValue() + (elapsedSeconds/3600) * tempExercise.getBurnedCalories());
+                                    goal.setAchivedValue(newArchivedValue/60);
                                     dataBaseHelper.updateGoalArchivedValue(goal, newArchivedValue);
                                     if (goal.getAchivedValue() >= goal.getValueToAchive()) {
                                         goal.setAchived(true);
@@ -129,7 +129,7 @@ public class StopwatchFragment extends Fragment {
                             }else {
                                 int elapsedSeconds = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
                                 //tutaj /60 jak chcemy minuty, wyrzucone dla testow
-                                int elapsedMinutes = elapsedSeconds;
+                                int elapsedMinutes = elapsedSeconds/60;
                                 if (elapsedMinutes > p.getTrainTime()) {
                                     dataBaseHelper.dropPlannedExercise(p.getID());
                                     Log.d("test", "Usunieto zaplanowane cwiczenie: " + p.toString());
