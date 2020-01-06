@@ -174,7 +174,7 @@ public class StatisticsFragment extends Fragment {
 
         List<DataPoint> dataPointList = new ArrayList<>();
         for (Weight weight : weightsList){
-            dataPointList.add(new DataPoint(weight.getDate(), weight.getWeight() / Math.sqrt(height / 100)));
+            dataPointList.add(new DataPoint(weight.getDate(), weight.getWeight() / Math.pow(height / 100, 2)));
         }
         DataPoint[] dataPointsArray = new DataPoint[dataPointList.size()];
         dataPointsArray = dataPointList.toArray(dataPointsArray);
