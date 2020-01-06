@@ -92,22 +92,24 @@ public class StatisticsFragment extends Fragment {
             }
 
 
+
+
             //sprawdzam czy jest juz jakis wpis z taka data
-            for (DataPoint d:dataPoints) {
-                double dateInMiliSeconds = d.getX();
-                long dateInSeconds = new Double(dateInMiliSeconds).longValue() * 1000;
-                Date tempDate = new Date(dateInSeconds);
-
-                //biore tylko poczatek z data
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                if(formatter.format(tempDate).equals(formatter.format(stopDateTime)))
-                {
-
-                }
-            }
-
-
+//            for (DataPoint d:dataPoints) {
+//                double dateInMiliSeconds = d.getX();
+//                long dateInSeconds = new Double(dateInMiliSeconds).longValue() * 1000;
+//                Date tempDate = new Date(dateInSeconds);
+//
+//                //biore tylko poczatek z data
+//                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//                if(formatter.format(tempDate).equals(formatter.format(stopDateTime)))
+//                {
+//
+//                }
+//            }
             dataPoints.add(new DataPoint(stopDateTime,spaloneKalorie));
+
+
 
         }
 
