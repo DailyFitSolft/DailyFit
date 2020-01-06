@@ -59,6 +59,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String PROFILE_COL2 = "Height";
     private static final String PROFILE_COL3 = "Weight";
     private static final String PROFILE_COL4 = "Age";
+    private static final String PROFILE_COL5 = "Gender";
 
 
     public DataBaseHelper(Context context) {
@@ -74,7 +75,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String createTableGoal = "CREATE TABLE " + GOAL_TABLE_NAME + " ( " + GOAL_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + GOAL_COL2 + " INTEGER, " + GOAL_COL3 + " TEXT, " + GOAL_COL4 + " INTEGER, " + GOAL_COL5 + " INTEGER, " + GOAL_COL6 + " INTEGER);";
         String createTableWeight = "CREATE TABLE " + WEIGHT_TABLE_NAME + " ( " + WEIGHT_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + WEIGHT_COL2 + " TEXT, " + WEIGHT_COL3 + " INTEGER);";
         String createTableTraining = "CREATE TABLE " + TRAINING_TABLE_NAME + " ( " + TRAINING_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TRAINING_COL2 + " INTEGER, " + TRAINING_COL3 + " TEXT, " + TRAINING_COL4 + " TEXT);";
-        String createProfileTable = "CREATE TABLE " + PROFILE_TABLE_NAME + " ( " + PROFILE_COL1 + " TEXT PRIMARY KEY, " + PROFILE_COL2 + " INTEGER, " + PROFILE_COL3 + " INTEGER, " + PROFILE_COL4 + " INTEGER);";
+        String createProfileTable = "CREATE TABLE " + PROFILE_TABLE_NAME + " ( " + PROFILE_COL1 + " TEXT PRIMARY KEY, " + PROFILE_COL2 + " INTEGER, " + PROFILE_COL3 + " INTEGER, " + PROFILE_COL4 + " INTEGER, " + PROFILE_COL5 + " TEXT);";
 
         sqLiteDatabase.execSQL(createTableExercise);
         sqLiteDatabase.execSQL(createTablePlannedExercise);
@@ -503,13 +504,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //========PROFILE====================================================================
 
-    public boolean addProfileData(String name, double height, double weight, int age){
+    public boolean addProfileData(String name, double height, double weight, int age, String gender){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PROFILE_COL1, name);
         contentValues.put(PROFILE_COL2, height);
         contentValues.put(PROFILE_COL3, weight);
         contentValues.put(PROFILE_COL4, age);
+        contentValues.put(PROFILE_COL5, gender);
 
         Log.d( PROFILE_TABLE_NAME ,"adding profile info: " + name);
         long result = db.insert(PROFILE_TABLE_NAME, null, contentValues);
@@ -544,7 +546,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private Profile getProfile(Cursor data){
         Profile profile = null;
         if(data.moveToNext()){
-            profile = new Profile(data.getString(0), data.getDouble(1), data.getDouble(2), data.getInt(3));
+            profile = new Profile(data.getString(0), data.getDouble(1), data.getDouble(2), data.getInt(3), data.getString(4));
         }
         return profile;
     }
@@ -573,6 +575,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void modifyProfileBirthdate(String birthday){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE " + PROFILE_TABLE_NAME + " SET " + PROFILE_COL4 + " = " + birthday + " WHERE 1=1;");
+    }
+    public void modifyProfileGender(String gender){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + PROFILE_TABLE_NAME + " SET " + PROFILE_COL5 + " = " + gender + " WHERE 1=1;");
     }
 }
 

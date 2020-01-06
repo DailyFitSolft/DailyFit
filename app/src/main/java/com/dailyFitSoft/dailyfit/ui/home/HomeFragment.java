@@ -344,7 +344,7 @@ public class HomeFragment extends Fragment {
                 String gender = genderPicked.getText().toString();
                 if (!(name.equals("") || height.equals("") || weight.equals("") || age.equals(""))){
                     if(Integer.valueOf(height) >0 && Integer.valueOf(height)<250 && Double.valueOf(weight) > 0 && Double.valueOf(weight) < 350 && Integer.valueOf(age) > 0 && Integer.valueOf(age) < 150) {
-                        boolean x = dataBaseHelper.addProfileData(name, Double.valueOf(height), Double.valueOf(weight), Integer.valueOf(age));
+                        boolean x = dataBaseHelper.addProfileData(name, Double.valueOf(height), Double.valueOf(weight), Integer.valueOf(age), gender);
                         Log.d("db", String.valueOf(x));
                         dataBaseHelper.addWeightData(DateFormatter.stringFromDate(new Date()), Float.valueOf(weightInput.getText().toString()));
                         dialogInterface.dismiss();
