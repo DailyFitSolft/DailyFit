@@ -2,6 +2,7 @@ package com.dailyFitSoft.dailyfit.ui.statistics;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,9 +67,10 @@ public class StatisticsFragment extends Fragment {
             Date startDateTime = training.getStartDateTime();
             Date stopDateTime = training.getStopDateTime();
 
+            //ile sie biegalo
             long difference = stopDateTime.getTime() - startDateTime.getTime();
             difference /= 1000;
-
+            //teraz difference jest w ssekundach
 
             long minutesOfBurningCalories = difference / 60;
 
@@ -79,16 +81,37 @@ public class StatisticsFragment extends Fragment {
 
                 int burnedCaloriesColumnId = cursor.getColumnIndex("BurnedCalories");
                 long burnedCalories = cursor.getLong(burnedCaloriesColumnId);
-
+                //511
                 spaloneKalorie = burnedCalories/60 * minutesOfBurningCalories;
-                dataPoints.add(new DataPoint(stopDateTime,spaloneKalorie));
+                //1768
 
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+
+
+            //sprawdzam czy jest juz jakis wpis z taka data
+            for (DataPoint d:dataPoints) {
+                double dateInMiliSeconds = d.getX();
+                long dateInSeconds = new Double(dateInMiliSeconds).longValue() * 1000;
+                Date tempDate = new Date(dateInSeconds);
+
+                //biore tylko poczatek z data
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                if(formatter.format(tempDate).equals(formatter.format(stopDateTime)))
+                {
+
+                }
+            }
+
+
+            dataPoints.add(new DataPoint(stopDateTime,spaloneKalorie));
+
         }
+
+
 
 
 
