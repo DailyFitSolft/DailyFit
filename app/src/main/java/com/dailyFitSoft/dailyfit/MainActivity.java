@@ -1,5 +1,6 @@
 package com.dailyFitSoft.dailyfit;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.os.Bundle;
 
