@@ -16,7 +16,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.dailyFitSoft.dailyfit.R;
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
+import com.dailyFitSoft.dailyfit.dataStore.Profile;
 import com.dailyFitSoft.dailyfit.dataStore.Training;
+import com.dailyFitSoft.dailyfit.dataStore.Weight;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
@@ -26,6 +28,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class StatisticsFragment extends Fragment {
 
@@ -46,8 +49,9 @@ public class StatisticsFragment extends Fragment {
                 textView.setText(s);
             }
         });
-
         createFirstPlot(root);
+        createWeightPlot(root);
+        createBMIPlot(root);
         return root;
     }
     public void createFirstPlot(View root)
@@ -138,4 +142,56 @@ public class StatisticsFragment extends Fragment {
         graph.getGridLabelRenderer().setHumanRounding(false);
     }
 
+    public void createWeightPlot(View root){
+        List<Weight> weightsList = dataBaseHelper.getWeightList();
+        GraphView graphView = root.findViewById(R.id.weightGraph);
+
+        List<DataPoint> dataPointList = new ArrayList<>();
+        for (Weight weight : weightsList){
+            dataPointList.add(new DataPoint(weight.getDate(), weight.getWeight()));
+        }
+        DataPoint[] dataPointsArray = new DataPoint[dataPointList.size()];
+        dataPointsArray = dataPointList.toArray(dataPointsArray);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsArray);
+        graphView.addSeries(series);
+        // set date label formatter
+        graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+
+// set manual x bounds to have nice steps
+        graphView.getViewport().setMinX(dataPointList.get(0).getX());
+        graphView.getViewport().setMaxX(dataPointList.get(dataPointList.size()-1).getX());
+        graphView.getViewport().setXAxisBoundsManual(true);
+
+// as we use dates as labels, the human rounding to nice readable numbers
+// is not necessary
+        graphView.getGridLabelRenderer().setHumanRounding(false);
+
+    }
+
+    public void createBMIPlot(View root){
+        List<Weight> weightsList = dataBaseHelper.getWeightList();
+        Profile profile = dataBaseHelper.getProfile();
+        double height = profile.getHeight();
+        GraphView graphView = root.findViewById(R.id.bmiGraph);
+
+        List<DataPoint> dataPointList = new ArrayList<>();
+        for (Weight weight : weightsList){
+            dataPointList.add(new DataPoint(weight.getDate(), weight.getWeight() / Math.sqrt(height / 100)));
+        }
+        DataPoint[] dataPointsArray = new DataPoint[dataPointList.size()];
+        dataPointsArray = dataPointList.toArray(dataPointsArray);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsArray);
+        graphView.addSeries(series);
+        // set date label formatter
+        graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
+
+        // set manual x bounds to have nice steps
+        graphView.getViewport().setMinX(dataPointList.get(0).getX());
+        graphView.getViewport().setMaxX(dataPointList.get(dataPointList.size()-1).getX());
+        graphView.getViewport().setXAxisBoundsManual(true);
+
+        // as we use dates as labels, the human rounding to nice readable numbers
+        // is not necessary
+        graphView.getGridLabelRenderer().setHumanRounding(false);
+    }
 }

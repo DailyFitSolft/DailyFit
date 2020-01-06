@@ -1,7 +1,13 @@
 package com.dailyFitSoft.dailyfit.ui.home;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -15,6 +21,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -35,6 +43,8 @@ import com.dailyFitSoft.dailyfit.dataStore.Profile;
 import com.dailyFitSoft.dailyfit.dataStore.Weight;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,6 +60,8 @@ public class HomeFragment extends Fragment {
     private ListView exerciseListView;
     private ArrayAdapter<String> exerciseListDataAdapter;
     private Exercise tempExercise;
+    private AlarmManager alarmManager;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -183,14 +195,53 @@ public class HomeFragment extends Fragment {
                 }
                 else
                 {
+
+                    String year = textRepresentationOfDate.substring(0,textRepresentationOfDate.indexOf('-'));
+                    String month = textRepresentationOfDate.substring(textRepresentationOfDate.indexOf('-')+1,textRepresentationOfDate.lastIndexOf('-'));
+                    String day = textRepresentationOfDate.substring(textRepresentationOfDate.lastIndexOf('-')+1, textRepresentationOfDate.length());
+
+//                    Calendar calendar = new Calendar.Builder().setCalendarType("iso8601")
+//                            .setDate(Integer.parseInt(year), Integer.parseInt(month),Integer.parseInt(day))
+//                            .setTimeOfDay(timePicker.getHour(),timePicker.getMinute(),0).build();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.YEAR, Integer.parseInt(year));
+                    calendar.set(Calendar.MONTH, Integer.parseInt(month)-1);
+                    calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
+                    calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour()-1);
+                    calendar.set(Calendar.MINUTE, timePicker.getMinute());
+                    calendar.set(Calendar.SECOND, 0);
+//                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+//                    Intent intent = new Intent(getContext(), AlertReceiver.class);
+//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 1, intent, 0);
+//                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+                    NotificationChannel notificationChannel = null;
+                    notificationChannel = new NotificationChannel("default", "primary",
+                            NotificationManager.IMPORTANCE_HIGH);
+
+                    NotificationManager manager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                    if(manager != null)
+                        manager.createNotificationChannel(notificationChannel);
+
+                    alarmManager = (AlarmManager) getActivity().getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    int m = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+                    PendingIntent intent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),m,
+                            new Intent(getActivity().getApplicationContext(), AlertReceiver.class), 0);
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
+
+
                     dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
                     dialog.cancel();
                     refreshListOfExercises();
+
+
+
                 }
 
             }
         });
         alertDialog.show();
+
 
     }
     private void refreshListOfExercises()
@@ -256,6 +307,7 @@ public class HomeFragment extends Fragment {
         final EditText heightInput = alertDialogView.findViewById(R.id.height_to_add);
         final EditText weightInput = alertDialogView.findViewById(R.id.weight_to_add);
         final EditText ageInput = alertDialogView.findViewById(R.id.age_to_add);
+        final RadioGroup genderInput =  alertDialogView.findViewById(R.id.genderRadioGroup);
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("Potwierdź", new DialogInterface.OnClickListener() {
             @Override
@@ -264,6 +316,8 @@ public class HomeFragment extends Fragment {
                 String height = heightInput.getText().toString();
                 String weight = weightInput.getText().toString();
                 String age = ageInput.getText().toString();
+                RadioButton genderPicked = alertDialogView.findViewById(genderInput.getCheckedRadioButtonId());
+                String gender = genderPicked.getText().toString();
                 if (!(name.equals("") || height.equals("") || weight.equals("") || age.equals(""))){
                     if(Integer.valueOf(height) >0 && Integer.valueOf(height)<250 && Double.valueOf(weight) > 0 && Double.valueOf(weight) < 350 && Integer.valueOf(age) > 0 && Integer.valueOf(age) < 150) {
                         boolean x = dataBaseHelper.addProfileData(name, Double.valueOf(height), Double.valueOf(weight), Integer.valueOf(age));
