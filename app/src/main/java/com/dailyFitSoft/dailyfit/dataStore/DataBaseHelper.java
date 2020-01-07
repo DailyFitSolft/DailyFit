@@ -525,7 +525,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return data.getCount();
     }
 
-    private Cursor getProfileData(){
+    public Cursor getProfileData(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + PROFILE_TABLE_NAME;
         return db.rawQuery(query, null);

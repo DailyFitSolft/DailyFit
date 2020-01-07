@@ -2,6 +2,7 @@ package com.dailyFitSoft.dailyfit;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -78,13 +79,21 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
-        Profile profile = dataBaseHelper.getProfile();
+        Cursor profileData = dataBaseHelper.getProfileData();
+        profileData.moveToFirst();
+        int nameColumn = profileData.getColumnIndex("Name");
+        String nameValue = profileData.getString(nameColumn);
+        int heightColumn = profileData.getColumnIndex("Height");
+        double heightValue = profileData.getDouble(heightColumn);
+        int weightColumn = profileData.getColumnIndex("Weight");
+        double weightValue = profileData.getDouble(weightColumn);
+
 
         this.profileNameTextView = navigationView.getHeaderView(0).findViewById(R.id.profileName);
-        this.profileNameTextView.setText("Witaj " + profile.getName() + "!");
+        this.profileNameTextView.setText("Witaj " + nameValue + "!");
 
         this.bmiTextView = navigationView.getHeaderView(0).findViewById(R.id.profileBmi);
-        double bmi = profile.getWeight()/(profile.getHeight()*profile.getHeight()/10000);
+        double bmi = weightValue/(heightValue*heightValue/10000);
         this.bmiTextView.setText(String.format("BMI: %.2f", bmi));
     }
 

@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -55,15 +56,32 @@ public class ProfileFragment extends Fragment {
         changeGender = (Button) root.findViewById(R.id.change_gender_button);
         dataBaseHelper = new DataBaseHelper(getContext());
 
-        final double databaseWeight = dataBaseHelper.getProfile().getWeight();
-        final double databaseHeigh = dataBaseHelper.getProfile().getHeight();
+//        final double databaseWeight = dataBaseHelper.getProfile().getWeight();
+//        final double databaseHeigh = dataBaseHelper.getProfile().getHeight();
 
 
-        textViewWeight.setText("Waga: " + Double.toString(dataBaseHelper.getProfile().getWeight()) + "kg");
-        textViewHight.setText("Wzrost: " + Double.toString(dataBaseHelper.getProfile().getHeight()) + "cm");
-        textViewName.setText(dataBaseHelper.getProfile().getName());
-        textViewBirthday.setText("Wiek: " + Integer.toString(dataBaseHelper.getProfile().getAge()));
-        textViewGender.setText(dataBaseHelper.getProfile().getGender());
+
+        Cursor profileData = dataBaseHelper.getProfileData();
+        profileData.moveToFirst();
+        int nameColumn = profileData.getColumnIndex("Name");
+        String nameValue = profileData.getString(nameColumn);
+        int heightColumn = profileData.getColumnIndex("Height");
+        final double heightValue = profileData.getDouble(heightColumn);
+        int weightColumn = profileData.getColumnIndex("Weight");
+        final double weightValue = profileData.getDouble(weightColumn);
+        int ageColumn = profileData.getColumnIndex("Age");
+        double ageValue = profileData.getDouble(ageColumn);
+        int genderColumn = profileData.getColumnIndex("Gender");
+        String genderValue = profileData.getString(genderColumn);
+
+
+
+
+        textViewWeight.setText("Waga: " +  weightValue + "kg");
+        textViewHight.setText("Wzrost: " + heightValue + "cm");
+        textViewName.setText("Imie:" + nameValue);
+        textViewBirthday.setText("Wiek: " + ageValue);
+        textViewGender.setText("Płeć: " + genderValue);
         changeWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +100,7 @@ public class ProfileFragment extends Fragment {
                                 textViewWeight.setText("Waga: " + weight + "kg");
                                 dataBaseHelper.modifyProfileWeight(weight);
                                 MainActivity mainActivity = (MainActivity)getActivity();
-                                double bmi = weight/(databaseHeigh * databaseHeigh/10000);
+                                double bmi = weight/(heightValue * heightValue/10000);
                                 String bmiStr = String.format("BMI: %.2f", bmi);
                                 mainActivity.setBmiProfile(bmiStr);
                             }
@@ -122,7 +140,7 @@ public class ProfileFragment extends Fragment {
                                 textViewHight.setText("Wzrost: " + height + "cm");
                                 dataBaseHelper.modifyProfileHight(height);
                                 MainActivity mainActivity = (MainActivity)getActivity();
-                                double bmi = databaseWeight/(height * height/10000);
+                                double bmi = weightValue/(height * height/10000);
                                 String bmiStr = String.format("BMI: %.2f", bmi);
                                 mainActivity.setBmiProfile(bmiStr);
                             }

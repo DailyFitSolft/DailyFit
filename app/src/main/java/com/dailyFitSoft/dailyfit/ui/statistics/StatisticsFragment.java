@@ -200,8 +200,12 @@ public class StatisticsFragment extends Fragment {
 
     public void createBMIPlot(View root){
         List<Weight> weightsList = dataBaseHelper.getWeightList();
-        Profile profile = dataBaseHelper.getProfile();
-        double height = profile.getHeight();
+        //Profile profile = dataBaseHelper.getProfile();
+        //double height = profile.getHeight();
+        Cursor profileData = dataBaseHelper.getProfileData();
+        profileData.moveToFirst();
+        int heightColumn = profileData.getColumnIndex("Height");
+        double height = profileData.getDouble(heightColumn);
         GraphView graphView = root.findViewById(R.id.bmiGraph);
 
         List<DataPoint> dataPointList = new ArrayList<>();
