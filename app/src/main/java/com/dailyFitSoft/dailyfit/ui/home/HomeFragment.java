@@ -251,8 +251,13 @@ public class HomeFragment extends Fragment {
                     int m = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
                     PendingIntent intent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),m,
                             new Intent(getActivity().getApplicationContext(), AlertReceiver.class), 0);
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
 
+                    if(!calendar.before(Calendar.getInstance())){
+
+                            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
+
+
+                        }
 
                     dataBaseHelper.addPlannedExerciseData(tempExercise.getID(),Integer.parseInt(timeOfExercise.getText().toString()),Integer.parseInt(numberOfRepeats.getText().toString()),textRepresentationOfDate,timePicker.getHour() +":"+ timePicker.getMinute());
                     dialog.cancel();
