@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/goal_item_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bacgroundColor1"
+    android:backgroundTint="@color/bacgroundColorTint">
 
     <CheckBox
         android:id="@+id/is_goal_achived"

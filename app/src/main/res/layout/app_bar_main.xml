@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bacgroundColor1"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -28,6 +29,8 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <include layout="@layout/content_main" />
+    <include
+        layout="@layout/content_main"
+        android:background="@color/bacgroundColor1" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

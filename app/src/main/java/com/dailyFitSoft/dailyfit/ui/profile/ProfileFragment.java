@@ -55,10 +55,15 @@ public class ProfileFragment extends Fragment {
         changeGender = (Button) root.findViewById(R.id.change_gender_button);
         dataBaseHelper = new DataBaseHelper(getContext());
 
+        final double databaseWeight = dataBaseHelper.getProfile().getWeight();
+        final double databaseHeigh = dataBaseHelper.getProfile().getHeight();
+
+
         textViewWeight.setText("Waga: " + Double.toString(dataBaseHelper.getProfile().getWeight()) + "kg");
         textViewHight.setText("Wzrost: " + Double.toString(dataBaseHelper.getProfile().getHeight()) + "cm");
         textViewName.setText(dataBaseHelper.getProfile().getName());
         textViewBirthday.setText("Wiek: " + Integer.toString(dataBaseHelper.getProfile().getAge()));
+        textViewGender.setText(dataBaseHelper.getProfile().getGender());
         changeWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +81,10 @@ public class ProfileFragment extends Fragment {
                             if(weight > 0 && weight < 350) {
                                 textViewWeight.setText("Waga: " + weight + "kg");
                                 dataBaseHelper.modifyProfileWeight(weight);
+                                MainActivity mainActivity = (MainActivity)getActivity();
+                                double bmi = weight/(databaseHeigh * databaseHeigh/10000);
+                                String bmiStr = String.format("BMI: %.2f", bmi);
+                                mainActivity.setBmiProfile(bmiStr);
                             }
                             dialogInterface.dismiss();
                         }
@@ -112,6 +121,10 @@ public class ProfileFragment extends Fragment {
                             if(height >0 && height<250) {
                                 textViewHight.setText("Wzrost: " + height + "cm");
                                 dataBaseHelper.modifyProfileHight(height);
+                                MainActivity mainActivity = (MainActivity)getActivity();
+                                double bmi = databaseWeight/(height * height/10000);
+                                String bmiStr = String.format("BMI: %.2f", bmi);
+                                mainActivity.setBmiProfile(bmiStr);
                             }
                             dialogInterface.dismiss();
                         }
@@ -149,6 +162,8 @@ public class ProfileFragment extends Fragment {
                             textViewName.setText(name);
                             dataBaseHelper.modifyProfileName("'" + name + "'" );
                             dialogInterface.dismiss();
+                            MainActivity mainActivity = (MainActivity)getActivity();
+                            mainActivity.setProfileName("Witaj " + name + "!");
                         }
                         catch(Exception e) {
                             e.printStackTrace();
@@ -217,6 +232,7 @@ public class ProfileFragment extends Fragment {
                         try {
                             RadioButton radioButton = alertDialogView.findViewById(radioGenderGroup.getCheckedRadioButtonId());
                             String gender = radioButton.getText().toString();
+                            dataBaseHelper.modifyProfileGender("'" + gender + "'" );
                             textViewGender.setText(gender);
                             dialogInterface.dismiss();
                         }

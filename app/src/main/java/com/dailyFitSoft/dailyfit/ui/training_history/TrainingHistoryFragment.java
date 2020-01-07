@@ -24,6 +24,7 @@ import com.dailyFitSoft.dailyfit.dataStore.Training;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class TrainingHistoryFragment extends Fragment {
@@ -75,6 +76,7 @@ public class TrainingHistoryFragment extends Fragment {
 
         try {
             trainings = (ArrayList<Training>) dataBaseHelper.getTrainingsList();
+            Collections.sort(trainings);
         }catch (NullPointerException ex){
             System.out.println("Brak zapisanych treningów w bazie danych");
         }

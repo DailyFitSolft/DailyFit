@@ -2,18 +2,21 @@ package com.dailyFitSoft.dailyfit;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 import com.dailyFitSoft.dailyfit.R;
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 import com.dailyFitSoft.dailyfit.dataStore.Exercise;
+import com.dailyFitSoft.dailyfit.dataStore.Profile;
 import com.dailyFitSoft.dailyfit.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.util.Log;
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -45,6 +48,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private TextView profileNameTextView;
+    private TextView bmiTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +70,22 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_excercise, R.id.nav_training_history,R.id.nav_statistics, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+                R.id.nav_home, R.id.nav_excercise, R.id.nav_training_history,R.id.nav_statistics)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
+        Profile profile = dataBaseHelper.getProfile();
+
+        this.profileNameTextView = navigationView.getHeaderView(0).findViewById(R.id.profileName);
+        this.profileNameTextView.setText("Witaj " + profile.getName() + "!");
+
+        this.bmiTextView = navigationView.getHeaderView(0).findViewById(R.id.profileBmi);
+        double bmi = profile.getWeight()/(profile.getHeight()*profile.getHeight()/10000);
+        this.bmiTextView.setText(String.format("BMI: %.2f", bmi));
     }
 
     @Override
@@ -101,5 +115,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean isFloatingButtonShown() {
         FloatingActionButton button = findViewById(R.id.fab);
         return button.isShown();
+    }
+
+    public void setProfileName(String name) {
+        this.profileNameTextView.setText(name);
+    }
+
+    public void setBmiProfile(String bmi) {
+        this.bmiTextView.setText(bmi);
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
     }
 }
