@@ -116,11 +116,11 @@ public class StatisticsFragment extends Fragment {
     public void createTimeInMovePlot(View root)
     {
         List<Training> trainingList = dataBaseHelper.getTrainingsList();
-        GraphView graphView = root.findViewById(R.id.weightGraph);
+        GraphView graphView = root.findViewById(R.id.timeInMoveGraph);
 
         List<DataPoint> dataPointList = new ArrayList<>();
         for (Training t : trainingList){
-            dataPointList.add(new DataPoint(t.getStopDateTime(), Math.abs(t.getStopDateTime().getTime() - t.getStartDateTime().getTime())/1000));
+            dataPointList.add(new DataPoint(t.getStopDateTime(), Math.abs(t.getStopDateTime().getTime() - t.getStartDateTime().getTime())/60000));
         }
         DataPoint[] dataPointsArray = new DataPoint[dataPointList.size()];
         dataPointsArray = dataPointList.toArray(dataPointsArray);
