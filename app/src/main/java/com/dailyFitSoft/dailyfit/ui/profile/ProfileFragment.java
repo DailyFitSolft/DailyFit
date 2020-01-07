@@ -69,19 +69,19 @@ public class ProfileFragment extends Fragment {
         final double heightValue = profileData.getDouble(heightColumn);
         int weightColumn = profileData.getColumnIndex("Weight");
         final double weightValue = profileData.getDouble(weightColumn);
+
         int ageColumn = profileData.getColumnIndex("Age");
         double ageValue = profileData.getDouble(ageColumn);
-        int genderColumn = profileData.getColumnIndex("Gender");
-        String genderValue = profileData.getString(genderColumn);
 
-
+//        int genderColumn = profileData.getColumnIndex("Gender");
+//        String genderValue = profileData.getString(genderColumn);
 
 
         textViewWeight.setText("Waga: " +  weightValue + "kg");
         textViewHight.setText("Wzrost: " + heightValue + "cm");
         textViewName.setText("Imie:" + nameValue);
         textViewBirthday.setText("Wiek: " + ageValue);
-        textViewGender.setText("Płeć: " + genderValue);
+        textViewGender.setText("Płeć: " + "mężczyzna");
         changeWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
