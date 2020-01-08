@@ -2,7 +2,7 @@ package com.dailyFitSoft.dailyfit.dataStore;
 
 import java.util.Date;
 
-public class Goal {
+public class Goal implements Comparable{
 
     private int ID;
     private GoalType goalType;
@@ -50,5 +50,12 @@ public class Goal {
 
     public void setAchivedValue(int achivedValue) {
         this.achivedValue = achivedValue;
+    }
+
+    @Override
+    public int compareTo(Object compareGoal) {
+        int compareage=((Goal)compareGoal).getID();
+
+        return compareage-this.ID;
     }
 }

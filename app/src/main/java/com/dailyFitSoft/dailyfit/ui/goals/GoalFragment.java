@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class GoalFragment extends Fragment {
         List<Goal> goals = new ArrayList<>();
         try{
             goals =  dataBaseHelper.getGoalList();
+            Collections.sort(goals);
         } catch (NullPointerException ex){
             System.out.println("Brak celów treningowych w bazie danych");
         }

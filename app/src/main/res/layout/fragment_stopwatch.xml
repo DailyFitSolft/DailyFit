@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
-
+    android:background="@color/bacgroundColor1"
+    android:gravity="center"
+    android:orientation="vertical">
 
 
     <Chronometer
@@ -18,22 +18,25 @@
         android:id="@+id/startbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
+        android:backgroundTint="@color/colorAccent"
         android:clickable="false"
-        android:visibility="gone"
-        android:onClick="startChronometer"/>
+        android:onClick="startChronometer"
+        android:text="Start"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/pausebutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pauza"
-        android:onClick="pauseChronometer"/>
+        android:backgroundTint="@color/colorPrimary"
+        android:onClick="pauseChronometer"
+        android:text="Pauza" />
 
     <Button
         android:id="@+id/resetbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
         android:clickable="false"
         android:onClick="resetChronometer"
         android:text="Reset" />
@@ -44,9 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="-350dp"
         android:dropDownWidth="wrap_content"
-        android:minHeight="50dp"
-        android:maxHeight="50dp"/>
-
+        android:maxHeight="50dp"
+        android:minHeight="50dp" />
 
 
 </LinearLayout>

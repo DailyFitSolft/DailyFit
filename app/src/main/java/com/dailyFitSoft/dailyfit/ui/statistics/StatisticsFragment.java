@@ -1,5 +1,6 @@
 package com.dailyFitSoft.dailyfit.ui.statistics;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.dailyFitSoft.dailyfit.MainActivity;
 import com.dailyFitSoft.dailyfit.R;
 import com.dailyFitSoft.dailyfit.dataStore.DataBaseHelper;
 import com.dailyFitSoft.dailyfit.dataStore.Profile;
@@ -31,6 +33,37 @@ public class StatisticsFragment extends Fragment {
 
     private StatisticsViewModel statisticsViewModel;
     private DataBaseHelper dataBaseHelper;
+    private boolean shouldShowFloatingButton;
+
+
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity)getActivity();
+
+            if (activity.isFloatingButtonShown()) {
+                activity.hideFloatingActionButton();
+                shouldShowFloatingButton = true;
+            } else {
+                shouldShowFloatingButton = false;
+            }
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity)getActivity();
+
+            if (shouldShowFloatingButton) {
+                activity.showFloatingActionButton();
+                shouldShowFloatingButton = false;
+            }
+        }
+    }
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
