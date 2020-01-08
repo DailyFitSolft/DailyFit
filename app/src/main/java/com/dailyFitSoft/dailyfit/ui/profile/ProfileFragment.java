@@ -63,6 +63,7 @@ public class ProfileFragment extends Fragment {
         textViewHight.setText("Wzrost: " + Double.toString(dataBaseHelper.getProfile().getHeight()) + "cm");
         textViewName.setText(dataBaseHelper.getProfile().getName());
         textViewBirthday.setText("Wiek: " + Integer.toString(dataBaseHelper.getProfile().getAge()));
+        textViewGender.setText(dataBaseHelper.getProfile().getGender());
         changeWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,6 +232,7 @@ public class ProfileFragment extends Fragment {
                         try {
                             RadioButton radioButton = alertDialogView.findViewById(radioGenderGroup.getCheckedRadioButtonId());
                             String gender = radioButton.getText().toString();
+                            dataBaseHelper.modifyProfileGender("'" + gender + "'" );
                             textViewGender.setText(gender);
                             dialogInterface.dismiss();
                         }
